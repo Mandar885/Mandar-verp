@@ -1,0 +1,7 @@
+export * from "./students"
+export * from "./faculty"
+export * from "./courses"
+export * from "./attendance"
+export * from "./departments"
+export * from "./dashboard"
+export * from "./roles"
