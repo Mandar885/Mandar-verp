@@ -87,7 +87,7 @@ const adminNav = [
     icon: <ClipboardListIcon />,
     items: [
       { title: "Enter Marks", url: "/dashboard/marks" },
-      { title: "SGPI Calculator", url: "/dashboard/sgpi" },
+      { title: "CGPA Calculator", url: "/dashboard/sgpi" },
     ],
   },
   {

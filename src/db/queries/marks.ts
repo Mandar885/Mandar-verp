@@ -56,6 +56,20 @@ export async function getAllMarksBySemester(semesterId: number) {
   )
 }
 
+export async function getAllMarks() {
+  return db.query.marks.findMany({
+    with: {
+      student: true,
+      courseOffering: {
+        with: {
+          course: true,
+          semester: { with: { academicYear: true } },
+        },
+      },
+    },
+  })
+}
+
 export async function upsertMarks(data: typeof marks.$inferInsert) {
   const [result] = await db
     .insert(marks)
