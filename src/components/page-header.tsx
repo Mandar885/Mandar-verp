@@ -21,19 +21,19 @@ export function PageHeader({
   parentHref?: string
 }) {
   return (
-    <header className="flex h-(--header-height) shrink-0 items-center border-b transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-(--header-height)">
-      <div className="flex w-full items-center gap-3 px-6 lg:px-10">
+    <header className="flex h-(--header-height) shrink-0 items-center gap-2 border-b transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-(--header-height)">
+      <div className="flex w-full items-center gap-1 px-4 lg:gap-2 lg:px-6">
         <SidebarTrigger className="-ml-1" />
         <Separator
           orientation="vertical"
-          className="mx-1 h-5 data-vertical:self-auto"
+          className="mx-2 h-4 data-vertical:self-auto"
         />
         <Breadcrumb>
           <BreadcrumbList>
             {parent && (
               <>
                 <BreadcrumbItem className="hidden md:block">
-                  <BreadcrumbLink href={parentHref ?? "/dashboard"} className="text-xs font-medium uppercase tracking-widest text-muted-foreground hover:text-foreground">
+                  <BreadcrumbLink href={parentHref ?? "/dashboard"}>
                     {parent}
                   </BreadcrumbLink>
                 </BreadcrumbItem>
@@ -41,7 +41,7 @@ export function PageHeader({
               </>
             )}
             <BreadcrumbItem>
-              <BreadcrumbPage className="text-xs font-medium uppercase tracking-widest">{title}</BreadcrumbPage>
+              <BreadcrumbPage>{title}</BreadcrumbPage>
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>

@@ -130,7 +130,7 @@ export function LoginForm({
               </Field>
 
               <Field>
-                <Button type="submit" className="w-full" disabled={loading}>
+                <Button type="submit" className="w-full bg-blue text-blue-foreground hover:bg-blue/90" disabled={loading}>
                   {loading ? "Please wait..." : isSignUp ? "Create Account" : "Sign In"}
                 </Button>
               </Field>
@@ -158,11 +158,11 @@ export function LoginForm({
               </FieldDescription>
             </FieldGroup>
           </form>
-          <div className="relative hidden bg-muted md:block">
-            <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-primary/20 to-primary/5">
+          <div className="relative hidden bg-blue md:block">
+            <div className="absolute inset-0 flex items-center justify-center">
               <div className="text-center p-8">
-                <h2 className="text-3xl font-bold text-primary">EXCS</h2>
-                <p className="text-muted-foreground mt-2">
+                <h2 className="text-4xl font-bold text-white">EXCS</h2>
+                <p className="text-white/70 mt-2">
                   College Management System
                 </p>
               </div>
