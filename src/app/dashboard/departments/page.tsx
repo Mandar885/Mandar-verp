@@ -9,7 +9,11 @@ export default async function DepartmentsPage() {
 
   return (
     <>
-      <PageHeader title="All Departments" parent="Departments" parentHref="/dashboard/departments" />
+      <PageHeader
+        title="All Departments"
+        parent="Departments"
+        parentHref="/dashboard/departments"
+      />
       <div className="@container/main flex flex-1 flex-col gap-4 p-4 lg:p-6">
         <DepartmentsClient data={data} />
       </div>

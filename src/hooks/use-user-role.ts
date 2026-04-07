@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect, useSyncExternalStore } from "react"
+import { useEffect, useSyncExternalStore } from "react"
 
 type UserRole = "admin" | "faculty" | "student"
 

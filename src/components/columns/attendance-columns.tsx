@@ -12,7 +12,10 @@ export type AttendanceRow = {
   course: { courseName: string; courseCode: string } | null
 }
 
-const statusVariant: Record<string, "default" | "secondary" | "destructive" | "outline"> = {
+const statusVariant: Record<
+  string,
+  "default" | "secondary" | "destructive" | "outline"
+> = {
   present: "default",
   absent: "destructive",
   late: "outline",
@@ -28,7 +31,8 @@ export const attendanceColumns: ColumnDef<AttendanceRow>[] = [
   {
     id: "student",
     header: "Student",
-    accessorFn: (row) => row.student ? `${row.student.firstName} ${row.student.lastName}` : "-",
+    accessorFn: (row) =>
+      row.student ? `${row.student.firstName} ${row.student.lastName}` : "-",
   },
   {
     id: "rollNumber",
@@ -38,7 +42,8 @@ export const attendanceColumns: ColumnDef<AttendanceRow>[] = [
   {
     id: "course",
     header: "Course",
-    accessorFn: (row) => row.course ? `${row.course.courseCode} - ${row.course.courseName}` : "-",
+    accessorFn: (row) =>
+      row.course ? `${row.course.courseCode} - ${row.course.courseName}` : "-",
   },
   {
     accessorKey: "status",

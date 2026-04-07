@@ -7,7 +7,11 @@ import { Badge } from "@/components/ui/badge"
 
 export const dynamic = "force-dynamic"
 
-export default async function StudentDetailPage({ params }: { params: Promise<{ id: string }> }) {
+export default async function StudentDetailPage({
+  params,
+}: {
+  params: Promise<{ id: string }>
+}) {
   const { id } = await params
   const student = await getStudentById(id)
   if (!student) return notFound()
@@ -57,8 +61,12 @@ export default async function StudentDetailPage({ params }: { params: Promise<{ 
       />
       <div className="@container/main flex flex-1 flex-col gap-4 p-4 lg:p-6">
         <div className="flex flex-wrap items-center gap-3 text-sm">
-          <Badge variant="outline" className="font-mono">{student.rollNumber}</Badge>
-          {student.division && <Badge variant="outline">Div {student.division}</Badge>}
+          <Badge variant="outline" className="font-mono">
+            {student.rollNumber}
+          </Badge>
+          {student.division && (
+            <Badge variant="outline">Div {student.division}</Badge>
+          )}
           <Badge variant="outline">{student.department}</Badge>
           <span className="text-muted-foreground">{student.email}</span>
         </div>

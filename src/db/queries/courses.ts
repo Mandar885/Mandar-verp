@@ -16,8 +16,12 @@ export async function getAllCourses(filters?: {
   return db.query.courses.findMany({
     where: and(
       eq(courses.isActive, true),
-      filters?.departmentId ? eq(courses.departmentId, filters.departmentId) : undefined,
-      filters?.courseType ? eq(courses.courseType, filters.courseType) : undefined,
+      filters?.departmentId
+        ? eq(courses.departmentId, filters.departmentId)
+        : undefined,
+      filters?.courseType
+        ? eq(courses.courseType, filters.courseType)
+        : undefined
     ),
     with: { department: true },
     orderBy: (courses, { asc }) => [asc(courses.courseCode)],
@@ -29,7 +33,10 @@ export async function createCourse(data: typeof courses.$inferInsert) {
   return result
 }
 
-export async function updateCourse(id: string, data: Partial<typeof courses.$inferInsert>) {
+export async function updateCourse(
+  id: string,
+  data: Partial<typeof courses.$inferInsert>
+) {
   const [result] = await db
     .update(courses)
     .set({ ...data, updatedAt: new Date() })

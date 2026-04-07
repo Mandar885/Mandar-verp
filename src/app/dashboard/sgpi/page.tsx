@@ -80,12 +80,18 @@ export default async function CgpaPage() {
   })
 
   // Collect unique divisions for filter
-  const divisions = [...new Set(students.map((s) => s.division).filter(Boolean))] as string[]
+  const divisions = [
+    ...new Set(students.map((s) => s.division).filter(Boolean)),
+  ] as string[]
   divisions.sort()
 
   return (
     <>
-      <PageHeader title="CGPA Calculator" parent="Academics" parentHref="/dashboard" />
+      <PageHeader
+        title="CGPA Calculator"
+        parent="Academics"
+        parentHref="/dashboard"
+      />
       <div className="@container/main flex flex-1 flex-col gap-4 p-4 lg:p-6">
         <CgpaClient students={studentData} divisions={divisions} />
       </div>

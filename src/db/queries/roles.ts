@@ -21,7 +21,11 @@ export async function hasRole(userId: string, roleName: string) {
   return result?.roleDefinition?.roleName === roleName
 }
 
-export async function assignRole(userId: string, roleName: string, assignedBy?: string) {
+export async function assignRole(
+  userId: string,
+  roleName: string,
+  assignedBy?: string
+) {
   const role = await db.query.roleDefinitions.findFirst({
     where: eq(roleDefinitions.roleName, roleName),
   })
@@ -46,7 +50,12 @@ export async function revokeRole(userId: string, roleDefinitionId: string) {
   const [result] = await db
     .update(userRoles)
     .set({ isActive: false, updatedAt: new Date() })
-    .where(and(eq(userRoles.userId, userId), eq(userRoles.roleDefinitionId, roleDefinitionId)))
+    .where(
+      and(
+        eq(userRoles.userId, userId),
+        eq(userRoles.roleDefinitionId, roleDefinitionId)
+      )
+    )
     .returning()
   return result
 }

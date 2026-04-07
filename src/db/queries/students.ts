@@ -10,7 +10,10 @@ export async function getStudentById(id: string) {
 
 export async function getStudentByAuthUserId(authUserId: string) {
   return db.query.students.findFirst({
-    where: and(eq(students.authUserId, authUserId), eq(students.isActive, true)),
+    where: and(
+      eq(students.authUserId, authUserId),
+      eq(students.isActive, true)
+    ),
   })
 }
 
@@ -21,10 +24,15 @@ export async function getAllStudents(filters?: {
   return db.query.students.findMany({
     where: and(
       eq(students.isActive, true),
-      filters?.department ? eq(students.department, filters.department) : undefined,
-      filters?.year ? eq(students.year, filters.year) : undefined,
+      filters?.department
+        ? eq(students.department, filters.department)
+        : undefined,
+      filters?.year ? eq(students.year, filters.year) : undefined
     ),
-    orderBy: (students, { asc }) => [asc(students.lastName), asc(students.firstName)],
+    orderBy: (students, { asc }) => [
+      asc(students.lastName),
+      asc(students.firstName),
+    ],
   })
 }
 
@@ -33,7 +41,10 @@ export async function createStudent(data: typeof students.$inferInsert) {
   return result
 }
 
-export async function updateStudent(id: string, data: Partial<typeof students.$inferInsert>) {
+export async function updateStudent(
+  id: string,
+  data: Partial<typeof students.$inferInsert>
+) {
   const [result] = await db
     .update(students)
     .set({ ...data, updatedAt: new Date() })

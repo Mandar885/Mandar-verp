@@ -61,9 +61,9 @@ export function AuditLogClient({
   return (
     <div className="space-y-4">
       {/* Filters */}
-      <div className="flex items-center gap-3 flex-wrap">
+      <div className="flex flex-wrap items-center gap-3">
         <div className="relative max-w-xs flex-1">
-          <SearchIcon className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
+          <SearchIcon className="text-muted-foreground absolute top-1/2 left-3 size-4 -translate-y-1/2" />
           <Input
             placeholder="Search logs..."
             value={search}
@@ -71,11 +71,13 @@ export function AuditLogClient({
             className="pl-9"
           />
         </div>
-        <div className="flex gap-1 flex-wrap">
+        <div className="flex flex-wrap gap-1">
           <button
             onClick={() => setFilterAction("all")}
-            className={`text-xs px-3 py-1.5 rounded-full font-medium transition-colors ${
-              filterAction === "all" ? "bg-blue text-blue-foreground shadow-sm" : "bg-muted hover:bg-muted/80 text-muted-foreground"
+            className={`rounded-full px-3 py-1.5 text-xs font-medium transition-colors ${
+              filterAction === "all"
+                ? "bg-blue text-blue-foreground shadow-sm"
+                : "bg-muted hover:bg-muted/80 text-muted-foreground"
             }`}
           >
             All
@@ -84,7 +86,7 @@ export function AuditLogClient({
             <button
               key={action}
               onClick={() => setFilterAction(action)}
-              className={`text-xs px-3 py-1.5 rounded-full font-medium transition-colors ${
+              className={`rounded-full px-3 py-1.5 text-xs font-medium transition-colors ${
                 filterAction === action
                   ? "bg-blue text-blue-foreground shadow-sm"
                   : "bg-muted hover:bg-muted/80 text-muted-foreground"
@@ -96,10 +98,12 @@ export function AuditLogClient({
         </div>
       </div>
 
-      <p className="text-xs font-medium text-muted-foreground tabular-nums">{filtered.length} entries</p>
+      <p className="text-muted-foreground text-xs font-medium tabular-nums">
+        {filtered.length} entries
+      </p>
 
       {/* Table */}
-      <div className="rounded-lg border bg-card">
+      <div className="bg-card rounded-lg border">
         <Table>
           <TableHeader>
             <TableRow>
@@ -113,14 +117,17 @@ export function AuditLogClient({
           <TableBody>
             {filtered.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={5} className="h-24 text-center text-muted-foreground">
+                <TableCell
+                  colSpan={5}
+                  className="text-muted-foreground h-24 text-center"
+                >
                   No audit logs found.
                 </TableCell>
               </TableRow>
             ) : (
               filtered.map((log) => (
                 <TableRow key={log.id}>
-                  <TableCell className="text-xs text-muted-foreground tabular-nums">
+                  <TableCell className="text-muted-foreground text-xs tabular-nums">
                     {new Date(log.createdAt).toLocaleString()}
                   </TableCell>
                   <TableCell>
@@ -131,16 +138,20 @@ export function AuditLogClient({
                       {log.action}
                     </Badge>
                   </TableCell>
-                  <TableCell className="text-sm font-medium">{log.actorName}</TableCell>
+                  <TableCell className="text-sm font-medium">
+                    {log.actorName}
+                  </TableCell>
                   <TableCell className="text-xs">
-                    <span className="text-muted-foreground">{log.targetType}</span>
+                    <span className="text-muted-foreground">
+                      {log.targetType}
+                    </span>
                     {log.targetId && (
-                      <span className="ml-1.5 rounded bg-muted px-1.5 py-0.5 font-mono text-[10px]">
+                      <span className="bg-muted ml-1.5 rounded px-1.5 py-0.5 font-mono text-[10px]">
                         {log.targetId.slice(0, 8)}
                       </span>
                     )}
                   </TableCell>
-                  <TableCell className="text-xs font-mono text-muted-foreground max-w-[200px] truncate">
+                  <TableCell className="text-muted-foreground max-w-[200px] truncate font-mono text-xs">
                     {log.details ? JSON.stringify(log.details) : "-"}
                   </TableCell>
                 </TableRow>

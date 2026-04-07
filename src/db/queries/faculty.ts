@@ -18,9 +18,14 @@ export async function getAllFaculty(filters?: { department?: string }) {
   return db.query.faculty.findMany({
     where: and(
       eq(faculty.isActive, true),
-      filters?.department ? eq(faculty.department, filters.department) : undefined,
+      filters?.department
+        ? eq(faculty.department, filters.department)
+        : undefined
     ),
-    orderBy: (faculty, { asc }) => [asc(faculty.lastName), asc(faculty.firstName)],
+    orderBy: (faculty, { asc }) => [
+      asc(faculty.lastName),
+      asc(faculty.firstName),
+    ],
   })
 }
 
@@ -29,7 +34,10 @@ export async function createFaculty(data: typeof faculty.$inferInsert) {
   return result
 }
 
-export async function updateFaculty(id: string, data: Partial<typeof faculty.$inferInsert>) {
+export async function updateFaculty(
+  id: string,
+  data: Partial<typeof faculty.$inferInsert>
+) {
   const [result] = await db
     .update(faculty)
     .set({ ...data, updatedAt: new Date() })

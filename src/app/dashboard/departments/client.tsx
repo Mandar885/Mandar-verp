@@ -1,7 +1,10 @@
 "use client"
 
 import { DataTableView } from "@/components/data-table-view"
-import { departmentsColumns, type DepartmentRow } from "@/components/columns/departments-columns"
+import {
+  departmentsColumns,
+  type DepartmentRow,
+} from "@/components/columns/departments-columns"
 
 export function DepartmentsClient({ data }: { data: DepartmentRow[] }) {
   return (

@@ -14,7 +14,9 @@ export default async function AuditPage() {
       <>
         <PageHeader title="Activity Log" />
         <div className="p-4 lg:p-6">
-          <p className="text-sm text-muted-foreground">Admin access required.</p>
+          <p className="text-muted-foreground text-sm">
+            Admin access required.
+          </p>
         </div>
       </>
     )

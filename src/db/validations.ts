@@ -8,7 +8,8 @@ import { marks } from "./schema/marks"
 
 export const insertStudentSchema = createInsertSchema(students, {
   email: (schema) => schema.email("Invalid email format"),
-  phoneNo: (schema) => schema.regex(/^\d{10}$/, "Phone must be 10 digits").optional(),
+  phoneNo: (schema) =>
+    schema.regex(/^\d{10}$/, "Phone must be 10 digits").optional(),
   department: () => z.string().min(1, "Department is required"),
   division: () => z.enum(["A", "B"]).optional(),
   year: () => z.enum(["FE", "SE", "TE", "BE"]),
@@ -19,7 +20,8 @@ export const selectStudentSchema = createSelectSchema(students)
 
 export const insertFacultySchema = createInsertSchema(faculty, {
   email: (schema) => schema.email("Invalid email format"),
-  phoneNo: (schema) => schema.regex(/^\d{10}$/, "Phone must be 10 digits").optional(),
+  phoneNo: (schema) =>
+    schema.regex(/^\d{10}$/, "Phone must be 10 digits").optional(),
   department: () => z.string().min(1, "Department is required"),
 })
 export const updateFacultySchema = insertFacultySchema.partial()

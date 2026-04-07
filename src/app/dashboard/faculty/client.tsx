@@ -1,7 +1,10 @@
 "use client"
 
 import { DataTableView } from "@/components/data-table-view"
-import { facultyColumns, type FacultyRow } from "@/components/columns/faculty-columns"
+import {
+  facultyColumns,
+  type FacultyRow,
+} from "@/components/columns/faculty-columns"
 
 export function FacultyClient({ data }: { data: FacultyRow[] }) {
   return (

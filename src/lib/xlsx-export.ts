@@ -1,7 +1,12 @@
 "use server"
 
 import ExcelJS from "exceljs"
-import { computeMarks, computeSgpi, type MarksInput, type CourseInfo } from "@/lib/sgpi"
+import {
+  computeMarks,
+  computeSgpi,
+  type MarksInput,
+  type CourseInfo,
+} from "@/lib/sgpi"
 
 const HEADER_FILL: ExcelJS.FillPattern = {
   type: "pattern",
@@ -31,8 +36,15 @@ const FAIL_FILL: ExcelJS.FillPattern = {
 
 const BASE_FONT: Partial<ExcelJS.Font> = { name: "Calibri", size: 11 }
 const BOLD_FONT: Partial<ExcelJS.Font> = { ...BASE_FONT, bold: true }
-const WHITE_BOLD: Partial<ExcelJS.Font> = { ...BASE_FONT, bold: true, color: { argb: "FFFFFFFF" } }
-const CENTER: Partial<ExcelJS.Alignment> = { horizontal: "center", vertical: "middle" }
+const WHITE_BOLD: Partial<ExcelJS.Font> = {
+  ...BASE_FONT,
+  bold: true,
+  color: { argb: "FFFFFFFF" },
+}
+const CENTER: Partial<ExcelJS.Alignment> = {
+  horizontal: "center",
+  vertical: "middle",
+}
 const THIN_BORDER: Partial<ExcelJS.Borders> = {
   top: { style: "thin" },
   bottom: { style: "thin" },
@@ -65,12 +77,32 @@ export async function exportMarksXlsx(params: {
   facultyName: string
   rows: MarksRow[]
 }): Promise<string> {
-  const { courseCode, courseName, courseType, maxIsa, maxMse, maxEse, maxTotal, division, facultyName, rows } = params
+  const {
+    courseCode,
+    courseName,
+    courseType,
+    maxIsa,
+    maxMse,
+    maxEse,
+    maxTotal,
+    division,
+    facultyName,
+    rows,
+  } = params
   const hasMse = maxMse > 0
-  const courseInfo: CourseInfo = { courseType, credits: 0, maxIsa, maxMse, maxEse, maxTotal }
+  const courseInfo: CourseInfo = {
+    courseType,
+    credits: 0,
+    maxIsa,
+    maxMse,
+    maxEse,
+    maxTotal,
+  }
 
   const wb = new ExcelJS.Workbook()
-  const ws = wb.addWorksheet(courseCode, { views: [{ state: "frozen", ySplit: 3 }] })
+  const ws = wb.addWorksheet(courseCode, {
+    views: [{ state: "frozen", ySplit: 3 }],
+  })
 
   // Title row
   const titleRow = ws.getRow(1)
@@ -94,7 +126,8 @@ export async function exportMarksXlsx(params: {
 
   // Header row
   const headers = ["#", "Roll No.", "Name", `ISA (${maxIsa})`]
-  if (hasMse) headers.push(`MSE-1 (${maxMse})`, `MSE-2 (${maxMse})`, "Final MSE")
+  if (hasMse)
+    headers.push(`MSE-1 (${maxMse})`, `MSE-2 (${maxMse})`, "Final MSE")
   headers.push(`ESE (${maxEse})`, "Total", "%", "GP", "Status")
 
   const headerRow = ws.getRow(3)
@@ -119,14 +152,23 @@ export async function exportMarksXlsx(params: {
     const computed = computeMarks(row, courseInfo)
     const r = ws.getRow(idx + 4)
 
-    const vals: (string | number | null)[] = [idx + 1, row.rollNumber, row.name, row.isa]
+    const vals: (string | number | null)[] = [
+      idx + 1,
+      row.rollNumber,
+      row.name,
+      row.isa,
+    ]
     if (hasMse) vals.push(row.mse1, row.mse2, computed.finalMse)
     vals.push(
       row.ese,
       computed.percentage != null ? computed.total : null,
       computed.percentage,
       computed.gradePoint === "Fail" ? "Fail" : computed.gradePoint,
-      computed.status === "pass" ? "Pass" : computed.status === "fail" ? "Fail" : null
+      computed.status === "pass"
+        ? "Pass"
+        : computed.status === "fail"
+          ? "Fail"
+          : null
     )
 
     vals.forEach((v, i) => {
@@ -178,7 +220,9 @@ export async function exportSgpiXlsx(params: {
   const { semesterLabel, students } = params
 
   const wb = new ExcelJS.Workbook()
-  const ws = wb.addWorksheet("SGPI Report", { views: [{ state: "frozen", ySplit: 3 }] })
+  const ws = wb.addWorksheet("SGPI Report", {
+    views: [{ state: "frozen", ySplit: 3 }],
+  })
 
   const lastCol = 7
 
@@ -196,7 +240,7 @@ export async function exportSgpiXlsx(params: {
   const subRow = ws.getRow(2)
   ws.mergeCells(2, 1, 2, lastCol)
   const subCell = subRow.getCell(1)
-  subCell.value = `EXCS Department | ${students.length} students | Generated ${new Date().toLocaleDateString()}`
+  subCell.value = `${students.length} students | Generated ${new Date().toLocaleDateString()}`
   subCell.font = BOLD_FONT
   subCell.fill = SUBHEADER_FILL
   subCell.alignment = CENTER
@@ -225,7 +269,12 @@ export async function exportSgpiXlsx(params: {
   // Data
   students.forEach((student, idx) => {
     const entries = student.courses.map((c) => ({
-      marks: { isa: c.isa, mse1: c.mse1, mse2: c.mse2, ese: c.ese } as MarksInput,
+      marks: {
+        isa: c.isa,
+        mse1: c.mse1,
+        mse2: c.mse2,
+        ese: c.ese,
+      } as MarksInput,
       course: {
         courseType: c.courseType,
         credits: c.credits,
@@ -272,8 +321,20 @@ export async function exportSgpiXlsx(params: {
 
   const passCount = students.filter((s) => {
     const entries = s.courses.map((c) => ({
-      marks: { isa: c.isa, mse1: c.mse1, mse2: c.mse2, ese: c.ese } as MarksInput,
-      course: { courseType: c.courseType, credits: c.credits, maxIsa: c.maxIsa, maxMse: c.maxMse, maxEse: c.maxEse, maxTotal: c.maxTotal } as CourseInfo,
+      marks: {
+        isa: c.isa,
+        mse1: c.mse1,
+        mse2: c.mse2,
+        ese: c.ese,
+      } as MarksInput,
+      course: {
+        courseType: c.courseType,
+        credits: c.credits,
+        maxIsa: c.maxIsa,
+        maxMse: c.maxMse,
+        maxEse: c.maxEse,
+        maxTotal: c.maxTotal,
+      } as CourseInfo,
     }))
     const sgpi = computeSgpi(entries)
     return sgpi.sgpi != null && !sgpi.hasFail
@@ -281,8 +342,20 @@ export async function exportSgpiXlsx(params: {
 
   const failCount = students.filter((s) => {
     const entries = s.courses.map((c) => ({
-      marks: { isa: c.isa, mse1: c.mse1, mse2: c.mse2, ese: c.ese } as MarksInput,
-      course: { courseType: c.courseType, credits: c.credits, maxIsa: c.maxIsa, maxMse: c.maxMse, maxEse: c.maxEse, maxTotal: c.maxTotal } as CourseInfo,
+      marks: {
+        isa: c.isa,
+        mse1: c.mse1,
+        mse2: c.mse2,
+        ese: c.ese,
+      } as MarksInput,
+      course: {
+        courseType: c.courseType,
+        credits: c.credits,
+        maxIsa: c.maxIsa,
+        maxMse: c.maxMse,
+        maxEse: c.maxEse,
+        maxTotal: c.maxTotal,
+      } as CourseInfo,
     }))
     return computeSgpi(entries).hasFail
   }).length

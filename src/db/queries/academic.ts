@@ -1,4 +1,4 @@
-import { eq, and } from "drizzle-orm"
+import { eq } from "drizzle-orm"
 import { db } from "@/db"
 import { academicYears, semesters } from "@/db/schema"
 

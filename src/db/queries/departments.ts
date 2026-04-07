@@ -21,7 +21,10 @@ export async function createDepartment(data: typeof departments.$inferInsert) {
   return result
 }
 
-export async function updateDepartment(id: number, data: Partial<typeof departments.$inferInsert>) {
+export async function updateDepartment(
+  id: number,
+  data: Partial<typeof departments.$inferInsert>
+) {
   const [result] = await db
     .update(departments)
     .set({ ...data, updatedAt: new Date() })

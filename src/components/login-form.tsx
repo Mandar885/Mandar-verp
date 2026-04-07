@@ -13,7 +13,12 @@ import {
 } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
 import { signIn, signUp } from "@/lib/auth-client"
-import { GraduationCapIcon, ShieldCheckIcon, BarChart3Icon, UsersIcon } from "lucide-react"
+import {
+  GraduationCapIcon,
+  ShieldCheckIcon,
+  BarChart3Icon,
+  UsersIcon,
+} from "lucide-react"
 
 export function LoginForm({
   className,
@@ -65,13 +70,16 @@ export function LoginForm({
   return (
     <div className={cn("flex min-h-svh", className)} {...props}>
       {/* Left: Branding Panel */}
-      <div className="relative hidden w-[52%] overflow-hidden bg-blue lg:block">
+      <div className="bg-blue relative hidden w-[52%] overflow-hidden lg:block">
         {/* Geometric pattern overlay */}
-        <div className="absolute inset-0 opacity-[0.07]" style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
-        }} />
+        <div
+          className="absolute inset-0 opacity-[0.07]"
+          style={{
+            backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
+          }}
+        />
         {/* Gradient overlay for depth */}
-        <div className="absolute inset-0 bg-gradient-to-br from-blue/20 via-transparent to-black/20" />
+        <div className="from-blue/20 absolute inset-0 bg-gradient-to-br via-transparent to-black/20" />
 
         <div className="relative flex h-full flex-col justify-between p-12">
           {/* Logo & Branding */}
@@ -80,7 +88,9 @@ export function LoginForm({
               <GraduationCapIcon className="size-6 text-white" />
             </div>
             <div>
-              <h1 className="text-xl font-bold tracking-tight text-white">EXCS</h1>
+              <h1 className="text-xl font-bold tracking-tight text-white">
+                VERP
+              </h1>
               <p className="text-xs font-medium text-white/60">College ERP</p>
             </div>
           </div>
@@ -88,8 +98,9 @@ export function LoginForm({
           {/* Center content */}
           <div className="space-y-8">
             <div className="space-y-4">
-              <h2 className="text-4xl font-bold leading-tight tracking-tight text-white">
-                College Management<br />
+              <h2 className="text-4xl leading-tight font-bold tracking-tight text-white">
+                College Management
+                <br />
                 <span className="text-white/70">Made Simple.</span>
               </h2>
               <p className="max-w-sm text-base leading-relaxed text-white/50">
@@ -100,9 +111,18 @@ export function LoginForm({
 
             {/* Feature pills */}
             <div className="flex flex-wrap gap-3">
-              <FeaturePill icon={<UsersIcon className="size-3.5" />} text="Student Management" />
-              <FeaturePill icon={<BarChart3Icon className="size-3.5" />} text="SGPI Analytics" />
-              <FeaturePill icon={<ShieldCheckIcon className="size-3.5" />} text="Role-Based Access" />
+              <FeaturePill
+                icon={<UsersIcon className="size-3.5" />}
+                text="Student Management"
+              />
+              <FeaturePill
+                icon={<BarChart3Icon className="size-3.5" />}
+                text="SGPI Analytics"
+              />
+              <FeaturePill
+                icon={<ShieldCheckIcon className="size-3.5" />}
+                text="Role-Based Access"
+              />
             </div>
           </div>
 
@@ -114,16 +134,16 @@ export function LoginForm({
       </div>
 
       {/* Right: Login Form */}
-      <div className="flex flex-1 flex-col items-center justify-center bg-card px-6 py-12">
+      <div className="bg-card flex flex-1 flex-col items-center justify-center px-6 py-12">
         <div className="w-full max-w-[380px]">
           {/* Mobile logo */}
           <div className="mb-8 flex items-center gap-3 lg:hidden">
-            <div className="flex size-10 items-center justify-center rounded-xl bg-blue">
+            <div className="bg-blue flex size-10 items-center justify-center rounded-xl">
               <GraduationCapIcon className="size-5 text-white" />
             </div>
             <div>
-              <h1 className="text-lg font-bold tracking-tight">EXCS</h1>
-              <p className="text-xs text-muted-foreground">College ERP</p>
+              <h1 className="text-lg font-bold tracking-tight">VERP</h1>
+              <p className="text-muted-foreground text-xs">College ERP</p>
             </div>
           </div>
 
@@ -133,16 +153,15 @@ export function LoginForm({
                 <h2 className="text-2xl font-bold tracking-tight">
                   {isSignUp ? "Create account" : "Welcome back"}
                 </h2>
-                <p className="text-sm text-muted-foreground">
+                <p className="text-muted-foreground text-sm">
                   {isSignUp
                     ? "Enter your details to get started"
-                    : "Sign in to access the dashboard"
-                  }
+                    : "Sign in to access the dashboard"}
                 </p>
               </div>
 
               {error && (
-                <div className="rounded-lg bg-destructive/8 px-3.5 py-2.5 text-sm font-medium text-destructive">
+                <div className="bg-destructive/8 text-destructive rounded-lg px-3.5 py-2.5 text-sm font-medium">
                   {error}
                 </div>
               )}
@@ -179,7 +198,7 @@ export function LoginForm({
                   {!isSignUp && (
                     <a
                       href="#"
-                      className="ml-auto text-xs font-medium text-blue underline-offset-2 hover:underline"
+                      className="text-blue ml-auto text-xs font-medium underline-offset-2 hover:underline"
                     >
                       Forgot password?
                     </a>
@@ -198,15 +217,21 @@ export function LoginForm({
               <Field>
                 <Button
                   type="submit"
-                  className="w-full bg-blue text-blue-foreground hover:bg-blue/90 h-10 font-semibold"
+                  className="bg-blue text-blue-foreground hover:bg-blue/90 h-10 w-full font-semibold"
                   disabled={loading}
                 >
-                  {loading ? "Please wait..." : isSignUp ? "Create Account" : "Sign In"}
+                  {loading
+                    ? "Please wait..."
+                    : isSignUp
+                      ? "Create Account"
+                      : "Sign In"}
                 </Button>
               </Field>
 
               <FieldSeparator className="*:data-[slot=field-separator-content]:bg-card">
-                {isSignUp ? "Already have an account?" : "Don't have an account?"}
+                {isSignUp
+                  ? "Already have an account?"
+                  : "Don't have an account?"}
               </FieldSeparator>
 
               <Field>

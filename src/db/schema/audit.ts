@@ -17,7 +17,9 @@ export const auditLogs = pgTable(
     targetType: text("target_type").notNull(),
     targetId: text("target_id"),
     details: jsonb("details"),
-    createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .defaultNow()
+      .notNull(),
   },
   (table) => [
     index("idx_audit_logs_action").on(table.action),

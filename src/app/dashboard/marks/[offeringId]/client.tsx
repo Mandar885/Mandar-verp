@@ -14,7 +14,14 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import { computeMarks, type MarksInput, type CourseInfo } from "@/lib/sgpi"
-import { LockIcon, UnlockIcon, DownloadIcon, FileSpreadsheetIcon, SaveIcon, CheckCircle2Icon } from "lucide-react"
+import {
+  LockIcon,
+  UnlockIcon,
+  DownloadIcon,
+  FileSpreadsheetIcon,
+  SaveIcon,
+  CheckCircle2Icon,
+} from "lucide-react"
 import { exportMarksXlsx } from "@/lib/xlsx-export"
 
 type StudentMarks = {
@@ -83,18 +90,21 @@ export function MarksEntryClient({
     return rows.filter((r) => ids.has(r.studentId))
   }, [rows, selectedBatch, batches])
 
-  const updateField = useCallback((studentId: string, field: keyof StudentMarks, value: string) => {
-    setRows((prev) =>
-      prev.map((r) => {
-        if (r.studentId !== studentId) return r
-        const num = value === "" ? null : parseInt(value, 10)
-        if (num != null && isNaN(num)) return r
-        return { ...r, [field]: num }
-      })
-    )
-    setSaved(false)
-    setSaveError(null)
-  }, [])
+  const updateField = useCallback(
+    (studentId: string, field: keyof StudentMarks, value: string) => {
+      setRows((prev) =>
+        prev.map((r) => {
+          if (r.studentId !== studentId) return r
+          const num = value === "" ? null : parseInt(value, 10)
+          if (num != null && isNaN(num)) return r
+          return { ...r, [field]: num }
+        })
+      )
+      setSaved(false)
+      setSaveError(null)
+    },
+    []
+  )
 
   async function handleSave() {
     setSaving(true)
@@ -120,8 +130,8 @@ export function MarksEntryClient({
       }
       setSaved(true)
       router.refresh()
-    } catch (err: any) {
-      setSaveError(err.message)
+    } catch (err) {
+      setSaveError(err instanceof Error ? err.message : "Failed to save")
     } finally {
       setSaving(false)
     }
@@ -145,7 +155,14 @@ export function MarksEntryClient({
   }
 
   function handleExportCsv() {
-    const courseInfo: CourseInfo = { courseType, credits: 0, maxIsa, maxMse, maxEse, maxTotal }
+    const courseInfo: CourseInfo = {
+      courseType,
+      credits: 0,
+      maxIsa,
+      maxMse,
+      maxEse,
+      maxTotal,
+    }
     const headers = ["Roll No.", "Name", "ISA"]
     if (hasMse) headers.push("MSE-1", "MSE-2", "Final MSE")
     headers.push("ESE", "Total", "%", "GP", "Status")
@@ -164,13 +181,15 @@ export function MarksEntryClient({
         row.ese ?? "",
         computed.percentage != null ? computed.total : "",
         computed.percentage ?? "",
-        computed.gradePoint === "Fail" ? "Fail" : computed.gradePoint ?? "",
-        computed.status ?? "",
+        computed.gradePoint === "Fail" ? "Fail" : (computed.gradePoint ?? ""),
+        computed.status ?? ""
       )
       return cols
     })
 
-    const csv = [headers, ...csvRows].map((r) => r.map((c) => `"${c}"`).join(",")).join("\n")
+    const csv = [headers, ...csvRows]
+      .map((r) => r.map((c) => `"${c}"`).join(","))
+      .join("\n")
     const blob = new Blob([csv], { type: "text/csv" })
     const url = URL.createObjectURL(blob)
     const a = document.createElement("a")
@@ -201,7 +220,9 @@ export function MarksEntryClient({
       })),
     })
     const bytes = Uint8Array.from(atob(base64), (c) => c.charCodeAt(0))
-    const blob = new Blob([bytes], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" })
+    const blob = new Blob([bytes], {
+      type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    })
     const url = URL.createObjectURL(blob)
     const a = document.createElement("a")
     a.href = url
@@ -213,31 +234,46 @@ export function MarksEntryClient({
   return (
     <div className="space-y-4">
       {/* Toolbar */}
-      <div className="flex items-center justify-between flex-wrap gap-3 rounded-lg border bg-card p-3">
+      <div className="bg-card flex flex-wrap items-center justify-between gap-3 rounded-lg border p-3">
         <div className="flex items-center gap-2 text-sm">
           <span className="font-medium">{facultyName}</span>
           <span className="text-muted-foreground">·</span>
-          {division && <Badge variant="secondary" className="text-xs">Div {division}</Badge>}
-          <Badge variant="outline" className="capitalize text-xs">{courseType}</Badge>
-          <span className="text-muted-foreground tabular-nums">{filteredRows.length} student(s)</span>
+          {division && (
+            <Badge variant="secondary" className="text-xs">
+              Div {division}
+            </Badge>
+          )}
+          <Badge variant="outline" className="text-xs capitalize">
+            {courseType}
+          </Badge>
+          <span className="text-muted-foreground tabular-nums">
+            {filteredRows.length} student(s)
+          </span>
           {locked && (
-            <Badge variant="outline" className="text-amber-600 border-amber-200 bg-amber-50 gap-1">
+            <Badge
+              variant="outline"
+              className="gap-1 border-amber-200 bg-amber-50 text-amber-600"
+            >
               <LockIcon className="size-3" /> Locked
             </Badge>
           )}
         </div>
         <div className="flex items-center gap-2">
-          {saveError && <span className="text-sm font-medium text-destructive">{saveError}</span>}
+          {saveError && (
+            <span className="text-destructive text-sm font-medium">
+              {saveError}
+            </span>
+          )}
           {saved && (
             <span className="flex items-center gap-1 text-sm text-emerald-600">
               <CheckCircle2Icon className="size-3.5" /> Saved
             </span>
           )}
           <Button variant="outline" size="sm" onClick={handleExportCsv}>
-            <DownloadIcon className="size-3.5 mr-1.5" /> CSV
+            <DownloadIcon className="mr-1.5 size-3.5" /> CSV
           </Button>
           <Button variant="outline" size="sm" onClick={handleExportXlsx}>
-            <FileSpreadsheetIcon className="size-3.5 mr-1.5" /> Excel
+            <FileSpreadsheetIcon className="mr-1.5 size-3.5" /> Excel
           </Button>
           <Button
             variant="outline"
@@ -245,7 +281,15 @@ export function MarksEntryClient({
             onClick={handleToggleLock}
             disabled={locking}
           >
-            {locked ? <><UnlockIcon className="size-3.5 mr-1.5" /> Unlock</> : <><LockIcon className="size-3.5 mr-1.5" /> Lock</>}
+            {locked ? (
+              <>
+                <UnlockIcon className="mr-1.5 size-3.5" /> Unlock
+              </>
+            ) : (
+              <>
+                <LockIcon className="mr-1.5 size-3.5" /> Lock
+              </>
+            )}
           </Button>
           <Button
             onClick={handleSave}
@@ -253,7 +297,7 @@ export function MarksEntryClient({
             className="bg-blue text-blue-foreground hover:bg-blue/90"
             size="sm"
           >
-            <SaveIcon className="size-3.5 mr-1.5" />
+            <SaveIcon className="mr-1.5 size-3.5" />
             {saving ? "Saving..." : "Save Marks"}
           </Button>
         </div>
@@ -262,11 +306,13 @@ export function MarksEntryClient({
       {/* Batch filter */}
       {batches.length > 0 && (
         <div className="flex items-center gap-2">
-          <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Batch:</span>
+          <span className="text-muted-foreground text-xs font-medium tracking-wide uppercase">
+            Batch:
+          </span>
           <div className="flex gap-1">
             <button
               onClick={() => setSelectedBatch("all")}
-              className={`text-xs px-3 py-1.5 rounded-full font-medium transition-colors ${
+              className={`rounded-full px-3 py-1.5 text-xs font-medium transition-colors ${
                 selectedBatch === "all"
                   ? "bg-blue text-blue-foreground shadow-sm"
                   : "bg-muted hover:bg-muted/80 text-muted-foreground"
@@ -278,7 +324,7 @@ export function MarksEntryClient({
               <button
                 key={b.name}
                 onClick={() => setSelectedBatch(b.name)}
-                className={`text-xs px-3 py-1.5 rounded-full font-medium transition-colors ${
+                className={`rounded-full px-3 py-1.5 text-xs font-medium transition-colors ${
                   selectedBatch === b.name
                     ? "bg-blue text-blue-foreground shadow-sm"
                     : "bg-muted hover:bg-muted/80 text-muted-foreground"
@@ -294,25 +340,37 @@ export function MarksEntryClient({
       {/* Table */}
       {filteredRows.length === 0 ? (
         <div className="flex flex-col items-center justify-center py-12 text-center">
-          <p className="text-sm text-muted-foreground">No students enrolled in this course offering.</p>
+          <p className="text-muted-foreground text-sm">
+            No students enrolled in this course offering.
+          </p>
         </div>
       ) : (
-        <div className="rounded-lg border bg-card overflow-x-auto">
+        <div className="bg-card overflow-x-auto rounded-lg border">
           <Table>
             <TableHeader>
               <TableRow>
                 <TableHead className="w-[50px]">#</TableHead>
                 <TableHead>Roll No.</TableHead>
                 <TableHead>Name</TableHead>
-                <TableHead className="w-[80px] text-center">ISA ({maxIsa})</TableHead>
+                <TableHead className="w-[80px] text-center">
+                  ISA ({maxIsa})
+                </TableHead>
                 {hasMse && (
                   <>
-                    <TableHead className="w-[80px] text-center">MSE-1 ({maxMse})</TableHead>
-                    <TableHead className="w-[80px] text-center">MSE-2 ({maxMse})</TableHead>
-                    <TableHead className="w-[80px] text-center">Final MSE</TableHead>
+                    <TableHead className="w-[80px] text-center">
+                      MSE-1 ({maxMse})
+                    </TableHead>
+                    <TableHead className="w-[80px] text-center">
+                      MSE-2 ({maxMse})
+                    </TableHead>
+                    <TableHead className="w-[80px] text-center">
+                      Final MSE
+                    </TableHead>
                   </>
                 )}
-                <TableHead className="w-[80px] text-center">ESE ({maxEse})</TableHead>
+                <TableHead className="w-[80px] text-center">
+                  ESE ({maxEse})
+                </TableHead>
                 <TableHead className="w-[70px] text-center">Total</TableHead>
                 <TableHead className="w-[60px] text-center">%</TableHead>
                 <TableHead className="w-[50px] text-center">GP</TableHead>
@@ -321,13 +379,26 @@ export function MarksEntryClient({
             </TableHeader>
             <TableBody>
               {filteredRows.map((row, idx) => {
-                const courseInfo: CourseInfo = { courseType, credits: 0, maxIsa, maxMse, maxEse, maxTotal }
+                const courseInfo: CourseInfo = {
+                  courseType,
+                  credits: 0,
+                  maxIsa,
+                  maxMse,
+                  maxEse,
+                  maxTotal,
+                }
                 const computed = computeMarks(row, courseInfo)
                 return (
                   <TableRow key={row.studentId}>
-                    <TableCell className="text-muted-foreground tabular-nums">{idx + 1}</TableCell>
-                    <TableCell className="font-mono text-xs">{row.rollNumber}</TableCell>
-                    <TableCell className="font-medium text-sm">{row.firstName} {row.lastName}</TableCell>
+                    <TableCell className="text-muted-foreground tabular-nums">
+                      {idx + 1}
+                    </TableCell>
+                    <TableCell className="font-mono text-xs">
+                      {row.rollNumber}
+                    </TableCell>
+                    <TableCell className="text-sm font-medium">
+                      {row.firstName} {row.lastName}
+                    </TableCell>
                     <TableCell>
                       <MarkInput
                         value={row.isa}
@@ -343,7 +414,9 @@ export function MarksEntryClient({
                             value={row.mse1}
                             max={maxMse}
                             disabled={locked}
-                            onChange={(v) => updateField(row.studentId, "mse1", v)}
+                            onChange={(v) =>
+                              updateField(row.studentId, "mse1", v)
+                            }
                           />
                         </TableCell>
                         <TableCell>
@@ -351,10 +424,12 @@ export function MarksEntryClient({
                             value={row.mse2}
                             max={maxMse}
                             disabled={locked}
-                            onChange={(v) => updateField(row.studentId, "mse2", v)}
+                            onChange={(v) =>
+                              updateField(row.studentId, "mse2", v)
+                            }
                           />
                         </TableCell>
-                        <TableCell className="text-center text-sm tabular-nums text-muted-foreground">
+                        <TableCell className="text-muted-foreground text-center text-sm tabular-nums">
                           {computed.finalMse ?? "-"}
                         </TableCell>
                       </>
@@ -378,12 +453,24 @@ export function MarksEntryClient({
                     </TableCell>
                     <TableCell className="text-center">
                       {computed.status === "pass" && (
-                        <Badge variant="outline" className="text-emerald-600 border-emerald-200 bg-emerald-50 text-xs">Pass</Badge>
+                        <Badge
+                          variant="outline"
+                          className="border-emerald-200 bg-emerald-50 text-xs text-emerald-600"
+                        >
+                          Pass
+                        </Badge>
                       )}
                       {computed.status === "fail" && (
-                        <Badge variant="outline" className="text-destructive border-red-200 bg-red-50 text-xs">Fail</Badge>
+                        <Badge
+                          variant="outline"
+                          className="text-destructive border-red-200 bg-red-50 text-xs"
+                        >
+                          Fail
+                        </Badge>
                       )}
-                      {computed.status == null && <span className="text-muted-foreground">-</span>}
+                      {computed.status == null && (
+                        <span className="text-muted-foreground">-</span>
+                      )}
                     </TableCell>
                   </TableRow>
                 )
@@ -396,7 +483,17 @@ export function MarksEntryClient({
   )
 }
 
-function MarkInput({ value, max, disabled, onChange }: { value: number | null; max: number; disabled?: boolean; onChange: (v: string) => void }) {
+function MarkInput({
+  value,
+  max,
+  disabled,
+  onChange,
+}: {
+  value: number | null
+  max: number
+  disabled?: boolean
+  onChange: (v: string) => void
+}) {
   return (
     <Input
       type="number"
@@ -405,7 +502,7 @@ function MarkInput({ value, max, disabled, onChange }: { value: number | null; m
       value={value ?? ""}
       onChange={(e) => onChange(e.target.value)}
       disabled={disabled}
-      className="h-8 w-[70px] text-center tabular-nums bg-background"
+      className="bg-background h-8 w-[70px] text-center tabular-nums"
       placeholder="-"
     />
   )

@@ -54,10 +54,16 @@ export const offeringsColumns: ColumnDef<OfferingRow>[] = [
     id: "faculty",
     header: "Faculty",
     accessorFn: (row) =>
-      row.faculty ? `${row.faculty.firstName} ${row.faculty.lastName}` : "Unassigned",
+      row.faculty
+        ? `${row.faculty.firstName} ${row.faculty.lastName}`
+        : "Unassigned",
     cell: ({ row }) => {
       const f = row.original.faculty
-      return f ? `${f.firstName} ${f.lastName}` : <span className="text-muted-foreground">Unassigned</span>
+      return f ? (
+        `${f.firstName} ${f.lastName}`
+      ) : (
+        <span className="text-muted-foreground">Unassigned</span>
+      )
     },
   },
   {
@@ -65,13 +71,18 @@ export const offeringsColumns: ColumnDef<OfferingRow>[] = [
     header: "Division",
     cell: ({ row }) => {
       const div = row.getValue("division") as string | null
-      return div ? <Badge variant="outline">{div}</Badge> : <span className="text-muted-foreground">All</span>
+      return div ? (
+        <Badge variant="outline">{div}</Badge>
+      ) : (
+        <span className="text-muted-foreground">All</span>
+      )
     },
   },
   {
     id: "semester",
     header: "Semester",
-    accessorFn: (row) => `Sem ${row.semester.number} (${row.semester.academicYear.name})`,
+    accessorFn: (row) =>
+      `Sem ${row.semester.number} (${row.semester.academicYear.name})`,
   },
   {
     id: "maxTotal",

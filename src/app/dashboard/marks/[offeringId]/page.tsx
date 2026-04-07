@@ -1,11 +1,21 @@
 import { notFound } from "next/navigation"
 import { PageHeader } from "@/components/page-header"
 import { MarksEntryClient } from "./client"
-import { getCourseOfferingById, getMarksByCourseOffering, getEnrollmentsByCourseOffering, getMarksLock, getBatchesByCourseOffering } from "@/db/queries"
+import {
+  getCourseOfferingById,
+  getMarksByCourseOffering,
+  getEnrollmentsByCourseOffering,
+  getMarksLock,
+  getBatchesByCourseOffering,
+} from "@/db/queries"
 
 export const dynamic = "force-dynamic"
 
-export default async function MarksEntryPage({ params }: { params: Promise<{ offeringId: string }> }) {
+export default async function MarksEntryPage({
+  params,
+}: {
+  params: Promise<{ offeringId: string }>
+}) {
   const { offeringId } = await params
   const offering = await getCourseOfferingById(offeringId)
 
@@ -41,7 +51,9 @@ export default async function MarksEntryPage({ params }: { params: Promise<{ off
     .filter((b) => b.isActive)
     .map((b) => ({
       name: b.name,
-      studentIds: b.assignments.filter((a) => a.isActive).map((a) => a.studentId),
+      studentIds: b.assignments
+        .filter((a) => a.isActive)
+        .map((a) => a.studentId),
     }))
     .sort((a, b) => a.name.localeCompare(b.name))
 
@@ -64,7 +76,11 @@ export default async function MarksEntryPage({ params }: { params: Promise<{ off
           maxTotal={offering.course.maxTotal}
           students={studentsWithMarks}
           division={offering.division}
-          facultyName={offering.faculty ? `${offering.faculty.firstName} ${offering.faculty.lastName}` : "Unassigned"}
+          facultyName={
+            offering.faculty
+              ? `${offering.faculty.firstName} ${offering.faculty.lastName}`
+              : "Unassigned"
+          }
           isLocked={lockAll?.isLocked ?? false}
           batches={batchMap}
         />

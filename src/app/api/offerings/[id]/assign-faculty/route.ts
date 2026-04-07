@@ -9,7 +9,10 @@ const schema = z.object({
   facultyId: z.string().uuid().nullable(),
 })
 
-export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+export async function PATCH(
+  req: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
   try {
     const user = await getSessionUser()
     if (!user || user.role !== "admin") {
@@ -23,7 +26,9 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
       return apiError("Invalid data", 400)
     }
 
-    const result = await updateCourseOffering(id, { facultyId: parsed.data.facultyId })
+    const result = await updateCourseOffering(id, {
+      facultyId: parsed.data.facultyId,
+    })
     if (!result) {
       return apiError("Offering not found", 404)
     }

@@ -16,7 +16,7 @@ export default async function MyMarksPage() {
       <>
         <PageHeader title="My Marks" />
         <div className="p-4 lg:p-6">
-          <p className="text-sm text-muted-foreground">
+          <p className="text-muted-foreground text-sm">
             This page is only accessible to students.
           </p>
         </div>

@@ -1,6 +1,11 @@
 import { NextRequest } from "next/server"
 import { getSessionUser } from "@/lib/session"
-import { lockMarks, unlockMarks, getMarksLock, createAuditLog } from "@/db/queries"
+import {
+  lockMarks,
+  unlockMarks,
+  getMarksLock,
+  createAuditLog,
+} from "@/db/queries"
 import { apiSuccess, apiError } from "@/lib/api-response"
 import { getErrorMessage } from "@/lib/error-utils"
 import { z } from "zod"
@@ -10,7 +15,10 @@ const schema = z.object({
   lock: z.boolean(),
 })
 
-export async function POST(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+export async function POST(
+  req: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
   try {
     const user = await getSessionUser()
     if (!user || (user.role !== "admin" && user.role !== "faculty")) {
@@ -49,7 +57,10 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
   }
 }
 
-export async function GET(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+export async function GET(
+  req: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
   try {
     const user = await getSessionUser()
     if (!user) {

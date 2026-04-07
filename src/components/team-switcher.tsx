@@ -46,12 +46,16 @@ export function TeamSwitcher({
               />
             }
           >
-            <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-blue text-blue-foreground shadow-sm">
+            <div className="bg-blue text-blue-foreground flex aspect-square size-8 items-center justify-center rounded-lg shadow-sm">
               {activeTeam.logo}
             </div>
             <div className="grid flex-1 text-left text-sm leading-tight">
-              <span className="truncate font-bold tracking-tight">{activeTeam.name}</span>
-              <span className="truncate text-xs text-muted-foreground">{activeTeam.plan}</span>
+              <span className="truncate font-bold tracking-tight">
+                {activeTeam.name}
+              </span>
+              <span className="text-muted-foreground truncate text-xs">
+                {activeTeam.plan}
+              </span>
             </div>
             <ChevronsUpDownIcon className="ml-auto" />
           </DropdownMenuTrigger>
@@ -62,7 +66,7 @@ export function TeamSwitcher({
             sideOffset={4}
           >
             <DropdownMenuGroup>
-              <DropdownMenuLabel className="text-xs text-muted-foreground">
+              <DropdownMenuLabel className="text-muted-foreground text-xs">
                 Teams
               </DropdownMenuLabel>
               {teams.map((team, index) => (
@@ -85,7 +89,7 @@ export function TeamSwitcher({
                 <div className="flex size-6 items-center justify-center rounded-md border bg-transparent">
                   <PlusIcon className="size-4" />
                 </div>
-                <div className="font-medium text-muted-foreground">
+                <div className="text-muted-foreground font-medium">
                   Add team
                 </div>
               </DropdownMenuItem>

@@ -1,7 +1,10 @@
 "use client"
 
 import { DataTableView } from "@/components/data-table-view"
-import { coursesColumns, type CourseRow } from "@/components/columns/courses-columns"
+import {
+  coursesColumns,
+  type CourseRow,
+} from "@/components/columns/courses-columns"
 
 export function CoursesClient({ data }: { data: CourseRow[] }) {
   return (

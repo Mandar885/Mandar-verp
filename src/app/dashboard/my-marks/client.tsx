@@ -9,13 +9,13 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card"
-import { computeMarks, computeSgpi, type MarksInput, type CourseInfo } from "@/lib/sgpi"
+  computeMarks,
+  computeSgpi,
+  type MarksInput,
+  type CourseInfo,
+} from "@/lib/sgpi"
 
 type CourseMarks = {
   courseCode: string
@@ -52,12 +52,16 @@ export function MyMarksClient({
     <div className="space-y-6">
       <div className="flex items-center gap-3">
         <span className="text-sm font-semibold">{studentName}</span>
-        <Badge variant="outline" className="font-mono text-xs">{rollNumber}</Badge>
+        <Badge variant="outline" className="font-mono text-xs">
+          {rollNumber}
+        </Badge>
       </div>
 
       {semesters.length === 0 && (
         <div className="flex flex-col items-center justify-center py-12 text-center">
-          <p className="text-sm text-muted-foreground">No marks recorded yet.</p>
+          <p className="text-muted-foreground text-sm">
+            No marks recorded yet.
+          </p>
         </div>
       )}
 
@@ -88,17 +92,24 @@ function SemesterCard({ semester }: { semester: SemesterData }) {
         <div className="flex items-center justify-between">
           <CardTitle className="text-base font-semibold">
             Semester {semester.semesterNumber}
-            <span className="ml-2 text-sm font-normal text-muted-foreground">
+            <span className="text-muted-foreground ml-2 text-sm font-normal">
               ({semester.academicYear})
             </span>
           </CardTitle>
           <div className="flex items-center gap-3 text-sm">
             {sgpi.hasFail && (
-              <Badge variant="outline" className="text-destructive border-red-200 bg-red-50 text-xs">Has Fail</Badge>
+              <Badge
+                variant="outline"
+                className="text-destructive border-red-200 bg-red-50 text-xs"
+              >
+                Has Fail
+              </Badge>
             )}
-            <div className="flex items-center gap-1.5 rounded-lg border bg-muted/50 px-3 py-1.5">
-              <span className="text-xs text-muted-foreground">SGPI</span>
-              <span className="font-bold tabular-nums text-blue">{sgpi.sgpi ?? "-"}</span>
+            <div className="bg-muted/50 flex items-center gap-1.5 rounded-lg border px-3 py-1.5">
+              <span className="text-muted-foreground text-xs">SGPI</span>
+              <span className="text-blue font-bold tabular-nums">
+                {sgpi.sgpi ?? "-"}
+              </span>
             </div>
           </div>
         </div>
@@ -132,28 +143,50 @@ function SemesterCard({ semester }: { semester: SemesterData }) {
                 }
                 const computed = computeMarks(
                   { isa: c.isa, mse1: c.mse1, mse2: c.mse2, ese: c.ese },
-                  courseInfo,
+                  courseInfo
                 )
                 return (
                   <TableRow key={c.courseCode}>
-                    <TableCell className="font-mono text-xs">{c.courseCode}</TableCell>
-                    <TableCell className="text-sm font-medium">{c.courseName}</TableCell>
-                    <TableCell className="text-center">
-                      <Badge variant="outline" className="capitalize text-[10px]">{c.courseType}</Badge>
+                    <TableCell className="font-mono text-xs">
+                      {c.courseCode}
                     </TableCell>
-                    <TableCell className="text-center tabular-nums">{c.credits}</TableCell>
-                    <TableCell className="text-center tabular-nums">{c.isa ?? "-"}</TableCell>
-                    <TableCell className="text-center tabular-nums">{computed.finalMse ?? "-"}</TableCell>
-                    <TableCell className="text-center tabular-nums">{c.ese ?? "-"}</TableCell>
-                    <TableCell className="text-center tabular-nums font-semibold">
+                    <TableCell className="text-sm font-medium">
+                      {c.courseName}
+                    </TableCell>
+                    <TableCell className="text-center">
+                      <Badge
+                        variant="outline"
+                        className="text-[10px] capitalize"
+                      >
+                        {c.courseType}
+                      </Badge>
+                    </TableCell>
+                    <TableCell className="text-center tabular-nums">
+                      {c.credits}
+                    </TableCell>
+                    <TableCell className="text-center tabular-nums">
+                      {c.isa ?? "-"}
+                    </TableCell>
+                    <TableCell className="text-center tabular-nums">
+                      {computed.finalMse ?? "-"}
+                    </TableCell>
+                    <TableCell className="text-center tabular-nums">
+                      {c.ese ?? "-"}
+                    </TableCell>
+                    <TableCell className="text-center font-semibold tabular-nums">
                       {computed.percentage != null ? computed.total : "-"}
                     </TableCell>
-                    <TableCell className="text-center tabular-nums">{computed.percentage ?? "-"}</TableCell>
                     <TableCell className="text-center tabular-nums">
-                      {computed.gradePoint === "Fail"
-                        ? <span className="font-medium text-destructive">Fail</span>
-                        : computed.gradePoint ?? "-"
-                      }
+                      {computed.percentage ?? "-"}
+                    </TableCell>
+                    <TableCell className="text-center tabular-nums">
+                      {computed.gradePoint === "Fail" ? (
+                        <span className="text-destructive font-medium">
+                          Fail
+                        </span>
+                      ) : (
+                        (computed.gradePoint ?? "-")
+                      )}
                     </TableCell>
                   </TableRow>
                 )
@@ -164,11 +197,15 @@ function SemesterCard({ semester }: { semester: SemesterData }) {
         <div className="flex items-center justify-end gap-6 pt-3 text-sm">
           <div>
             <span className="text-muted-foreground">Credits: </span>
-            <span className="font-semibold tabular-nums">{sgpi.totalCredits}</span>
+            <span className="font-semibold tabular-nums">
+              {sgpi.totalCredits}
+            </span>
           </div>
           <div>
             <span className="text-muted-foreground">CGP: </span>
-            <span className="font-semibold tabular-nums">{sgpi.totalCreditPoints}</span>
+            <span className="font-semibold tabular-nums">
+              {sgpi.totalCreditPoints}
+            </span>
           </div>
         </div>
       </CardContent>

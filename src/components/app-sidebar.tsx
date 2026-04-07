@@ -33,9 +33,9 @@ import { useUserRole } from "@/hooks/use-user-role"
 
 const teams = [
   {
-    name: "EXCS College",
+    name: "VERP",
     logo: <GraduationCapIcon />,
-    plan: "Admin Portal",
+    plan: "Vidyalankar ERP",
   },
 ]
 
@@ -45,41 +45,31 @@ const adminNav = [
     url: "/dashboard",
     icon: <LayoutDashboardIcon />,
     isActive: true,
-    items: [
-      { title: "Overview", url: "/dashboard" },
-    ],
+    items: [{ title: "Overview", url: "/dashboard" }],
   },
   {
     title: "Students",
     url: "/dashboard/students",
     icon: <UsersIcon />,
-    items: [
-      { title: "All Students", url: "/dashboard/students" },
-    ],
+    items: [{ title: "All Students", url: "/dashboard/students" }],
   },
   {
     title: "Faculty",
     url: "/dashboard/faculty",
     icon: <BookOpenIcon />,
-    items: [
-      { title: "All Faculty", url: "/dashboard/faculty" },
-    ],
+    items: [{ title: "All Faculty", url: "/dashboard/faculty" }],
   },
   {
     title: "Courses",
     url: "/dashboard/courses",
     icon: <FileTextIcon />,
-    items: [
-      { title: "All Courses", url: "/dashboard/courses" },
-    ],
+    items: [{ title: "All Courses", url: "/dashboard/courses" }],
   },
-{
+  {
     title: "Offerings",
     url: "/dashboard/offerings",
     icon: <LayersIcon />,
-    items: [
-      { title: "Current Semester", url: "/dashboard/offerings" },
-    ],
+    items: [{ title: "Current Semester", url: "/dashboard/offerings" }],
   },
   {
     title: "Marks",
@@ -94,17 +84,13 @@ const adminNav = [
     title: "Attendance",
     url: "/dashboard/attendance",
     icon: <ClipboardCheckIcon />,
-    items: [
-      { title: "Records", url: "/dashboard/attendance" },
-    ],
+    items: [{ title: "Records", url: "/dashboard/attendance" }],
   },
   {
     title: "Activity Log",
     url: "/dashboard/audit",
     icon: <ScrollTextIcon />,
-    items: [
-      { title: "All Logs", url: "/dashboard/audit" },
-    ],
+    items: [{ title: "All Logs", url: "/dashboard/audit" }],
   },
   {
     title: "Examinations",
@@ -132,25 +118,19 @@ const facultyNav = [
     url: "/dashboard",
     icon: <LayoutDashboardIcon />,
     isActive: true,
-    items: [
-      { title: "Overview", url: "/dashboard" },
-    ],
+    items: [{ title: "Overview", url: "/dashboard" }],
   },
   {
     title: "My Courses",
     url: "/dashboard/marks",
     icon: <ClipboardListIcon />,
-    items: [
-      { title: "Enter Marks", url: "/dashboard/marks" },
-    ],
+    items: [{ title: "Enter Marks", url: "/dashboard/marks" }],
   },
   {
     title: "Attendance",
     url: "/dashboard/attendance",
     icon: <ClipboardCheckIcon />,
-    items: [
-      { title: "Records", url: "/dashboard/attendance" },
-    ],
+    items: [{ title: "Records", url: "/dashboard/attendance" }],
   },
 ]
 
@@ -160,25 +140,19 @@ const studentNav = [
     url: "/dashboard",
     icon: <LayoutDashboardIcon />,
     isActive: true,
-    items: [
-      { title: "Overview", url: "/dashboard" },
-    ],
+    items: [{ title: "Overview", url: "/dashboard" }],
   },
   {
     title: "My Marks",
     url: "/dashboard/my-marks",
     icon: <ClipboardListIcon />,
-    items: [
-      { title: "View Marks", url: "/dashboard/my-marks" },
-    ],
+    items: [{ title: "View Marks", url: "/dashboard/my-marks" }],
   },
   {
     title: "Attendance",
     url: "/dashboard/attendance",
     icon: <ClipboardCheckIcon />,
-    items: [
-      { title: "Records", url: "/dashboard/attendance" },
-    ],
+    items: [{ title: "Records", url: "/dashboard/attendance" }],
   },
 ]
 

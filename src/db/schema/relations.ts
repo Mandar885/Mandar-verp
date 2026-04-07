@@ -6,7 +6,12 @@ import { departments } from "./departments"
 import { courses } from "./courses"
 import { roleDefinitions, userRoles } from "./roles"
 import { academicYears, semesters } from "./academic"
-import { courseOfferings, batches, batchAssignments, studentEnrollments } from "./offerings"
+import {
+  courseOfferings,
+  batches,
+  batchAssignments,
+  studentEnrollments,
+} from "./offerings"
 import { marks, marksLocks } from "./marks"
 import { auditLogs } from "./audit"
 
@@ -26,13 +31,19 @@ export const accountRelations = relations(account, ({ one }) => ({
 }))
 
 // Role relations
-export const roleDefinitionsRelations = relations(roleDefinitions, ({ many }) => ({
-  userRoles: many(userRoles),
-}))
+export const roleDefinitionsRelations = relations(
+  roleDefinitions,
+  ({ many }) => ({
+    userRoles: many(userRoles),
+  })
+)
 
 export const userRolesRelations = relations(userRoles, ({ one }) => ({
   user: one(user, { fields: [userRoles.userId], references: [user.id] }),
-  roleDefinition: one(roleDefinitions, { fields: [userRoles.roleDefinitionId], references: [roleDefinitions.id] }),
+  roleDefinition: one(roleDefinitions, {
+    fields: [userRoles.roleDefinitionId],
+    references: [roleDefinitions.id],
+  }),
 }))
 
 // Department relations
@@ -60,47 +71,95 @@ export const academicYearsRelations = relations(academicYears, ({ many }) => ({
 }))
 
 export const semestersRelations = relations(semesters, ({ one, many }) => ({
-  academicYear: one(academicYears, { fields: [semesters.academicYearId], references: [academicYears.id] }),
+  academicYear: one(academicYears, {
+    fields: [semesters.academicYearId],
+    references: [academicYears.id],
+  }),
   courseOfferings: many(courseOfferings),
 }))
 
 // Course relations
 export const coursesRelations = relations(courses, ({ one, many }) => ({
-  department: one(departments, { fields: [courses.departmentId], references: [departments.id] }),
-  parentCourse: one(courses, { fields: [courses.parentCourseId], references: [courses.id] }),
+  department: one(departments, {
+    fields: [courses.departmentId],
+    references: [departments.id],
+  }),
+  parentCourse: one(courses, {
+    fields: [courses.parentCourseId],
+    references: [courses.id],
+  }),
   offerings: many(courseOfferings),
 }))
 
 // Offering relations
-export const courseOfferingsRelations = relations(courseOfferings, ({ one, many }) => ({
-  course: one(courses, { fields: [courseOfferings.courseId], references: [courses.id] }),
-  semester: one(semesters, { fields: [courseOfferings.semesterId], references: [semesters.id] }),
-  faculty: one(faculty, { fields: [courseOfferings.facultyId], references: [faculty.id] }),
-  batches: many(batches),
-  enrollments: many(studentEnrollments),
-  marks: many(marks),
-  locks: many(marksLocks),
-}))
+export const courseOfferingsRelations = relations(
+  courseOfferings,
+  ({ one, many }) => ({
+    course: one(courses, {
+      fields: [courseOfferings.courseId],
+      references: [courses.id],
+    }),
+    semester: one(semesters, {
+      fields: [courseOfferings.semesterId],
+      references: [semesters.id],
+    }),
+    faculty: one(faculty, {
+      fields: [courseOfferings.facultyId],
+      references: [faculty.id],
+    }),
+    batches: many(batches),
+    enrollments: many(studentEnrollments),
+    marks: many(marks),
+    locks: many(marksLocks),
+  })
+)
 
 export const batchesRelations = relations(batches, ({ one, many }) => ({
-  courseOffering: one(courseOfferings, { fields: [batches.courseOfferingId], references: [courseOfferings.id] }),
+  courseOffering: one(courseOfferings, {
+    fields: [batches.courseOfferingId],
+    references: [courseOfferings.id],
+  }),
   assignments: many(batchAssignments),
 }))
 
-export const batchAssignmentsRelations = relations(batchAssignments, ({ one }) => ({
-  batch: one(batches, { fields: [batchAssignments.batchId], references: [batches.id] }),
-  student: one(students, { fields: [batchAssignments.studentId], references: [students.id] }),
-}))
+export const batchAssignmentsRelations = relations(
+  batchAssignments,
+  ({ one }) => ({
+    batch: one(batches, {
+      fields: [batchAssignments.batchId],
+      references: [batches.id],
+    }),
+    student: one(students, {
+      fields: [batchAssignments.studentId],
+      references: [students.id],
+    }),
+  })
+)
 
-export const studentEnrollmentsRelations = relations(studentEnrollments, ({ one }) => ({
-  courseOffering: one(courseOfferings, { fields: [studentEnrollments.courseOfferingId], references: [courseOfferings.id] }),
-  student: one(students, { fields: [studentEnrollments.studentId], references: [students.id] }),
-}))
+export const studentEnrollmentsRelations = relations(
+  studentEnrollments,
+  ({ one }) => ({
+    courseOffering: one(courseOfferings, {
+      fields: [studentEnrollments.courseOfferingId],
+      references: [courseOfferings.id],
+    }),
+    student: one(students, {
+      fields: [studentEnrollments.studentId],
+      references: [students.id],
+    }),
+  })
+)
 
 // Marks relations
 export const marksRelations = relations(marks, ({ one }) => ({
-  courseOffering: one(courseOfferings, { fields: [marks.courseOfferingId], references: [courseOfferings.id] }),
-  student: one(students, { fields: [marks.studentId], references: [students.id] }),
+  courseOffering: one(courseOfferings, {
+    fields: [marks.courseOfferingId],
+    references: [courseOfferings.id],
+  }),
+  student: one(students, {
+    fields: [marks.studentId],
+    references: [students.id],
+  }),
 }))
 
 // Audit relations
@@ -109,6 +168,12 @@ export const auditLogsRelations = relations(auditLogs, ({ one }) => ({
 }))
 
 export const marksLocksRelations = relations(marksLocks, ({ one }) => ({
-  courseOffering: one(courseOfferings, { fields: [marksLocks.courseOfferingId], references: [courseOfferings.id] }),
-  lockedByFaculty: one(faculty, { fields: [marksLocks.lockedBy], references: [faculty.id] }),
+  courseOffering: one(courseOfferings, {
+    fields: [marksLocks.courseOfferingId],
+    references: [courseOfferings.id],
+  }),
+  lockedByFaculty: one(faculty, {
+    fields: [marksLocks.lockedBy],
+    references: [faculty.id],
+  }),
 }))

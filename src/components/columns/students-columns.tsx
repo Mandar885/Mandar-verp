@@ -43,7 +43,9 @@ export const studentsColumns: ColumnDef<StudentRow>[] = [
   {
     accessorKey: "department",
     header: "Department",
-    cell: ({ row }) => <Badge variant="outline">{row.getValue("department")}</Badge>,
+    cell: ({ row }) => (
+      <Badge variant="outline">{row.getValue("department")}</Badge>
+    ),
   },
   {
     accessorKey: "year",

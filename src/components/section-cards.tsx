@@ -88,7 +88,9 @@ function StatCard({
     <Card className="@container/card">
       <CardHeader>
         <div className="flex items-center gap-2">
-          <div className={`flex size-8 items-center justify-center rounded-lg ${iconBg}`}>
+          <div
+            className={`flex size-8 items-center justify-center rounded-lg ${iconBg}`}
+          >
             {icon}
           </div>
           <CardDescription className="font-medium">{label}</CardDescription>
@@ -99,7 +101,11 @@ function StatCard({
         <CardAction>
           <Badge
             variant="outline"
-            className={trendUp ? "text-emerald-600 border-emerald-200 bg-emerald-50" : "text-destructive border-red-200 bg-red-50"}
+            className={
+              trendUp
+                ? "border-emerald-200 bg-emerald-50 text-emerald-600"
+                : "text-destructive border-red-200 bg-red-50"
+            }
           >
             {trendUp ? <TrendingUpIcon /> : <TrendingDownIcon />}
             {trend}
@@ -107,9 +113,7 @@ function StatCard({
         </CardAction>
       </CardHeader>
       <CardFooter className="flex-col items-start gap-1 text-sm">
-        <div className="line-clamp-1 flex gap-2 font-medium">
-          {detail}
-        </div>
+        <div className="line-clamp-1 flex gap-2 font-medium">{detail}</div>
         <div className="text-muted-foreground text-xs">{sub}</div>
       </CardFooter>
     </Card>

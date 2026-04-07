@@ -9,7 +9,11 @@ export default async function CoursesPage() {
 
   return (
     <>
-      <PageHeader title="All Courses" parent="Courses" parentHref="/dashboard/courses" />
+      <PageHeader
+        title="All Courses"
+        parent="Courses"
+        parentHref="/dashboard/courses"
+      />
       <div className="@container/main flex flex-1 flex-col gap-4 p-4 lg:p-6">
         <CoursesClient data={data} />
       </div>

@@ -24,36 +24,43 @@ export async function getMarksByStudent(studentId: string) {
   })
 }
 
-export async function getMarksByStudentAndSemester(studentId: string, semesterId: number) {
-  return db.query.marks.findMany({
-    where: eq(marks.studentId, studentId),
-    with: {
-      courseOffering: {
-        with: {
-          course: true,
-          semester: { with: { academicYear: true } },
+export async function getMarksByStudentAndSemester(
+  studentId: string,
+  semesterId: number
+) {
+  return db.query.marks
+    .findMany({
+      where: eq(marks.studentId, studentId),
+      with: {
+        courseOffering: {
+          with: {
+            course: true,
+            semester: { with: { academicYear: true } },
+          },
         },
       },
-    },
-  }).then((results) =>
-    results.filter((m) => m.courseOffering.semesterId === semesterId)
-  )
+    })
+    .then((results) =>
+      results.filter((m) => m.courseOffering.semesterId === semesterId)
+    )
 }
 
 export async function getAllMarksBySemester(semesterId: number) {
-  return db.query.marks.findMany({
-    with: {
-      student: true,
-      courseOffering: {
-        with: {
-          course: true,
-          semester: { with: { academicYear: true } },
+  return db.query.marks
+    .findMany({
+      with: {
+        student: true,
+        courseOffering: {
+          with: {
+            course: true,
+            semester: { with: { academicYear: true } },
+          },
         },
       },
-    },
-  }).then((results) =>
-    results.filter((m) => m.courseOffering.semesterId === semesterId)
-  )
+    })
+    .then((results) =>
+      results.filter((m) => m.courseOffering.semesterId === semesterId)
+    )
 }
 
 export async function getAllMarks() {
@@ -112,16 +119,23 @@ export async function bulkUpsertMarks(entries: (typeof marks.$inferInsert)[]) {
   })
 }
 
-export async function getMarksLock(courseOfferingId: string, component: string) {
+export async function getMarksLock(
+  courseOfferingId: string,
+  component: string
+) {
   return db.query.marksLocks.findFirst({
     where: and(
       eq(marksLocks.courseOfferingId, courseOfferingId),
-      eq(marksLocks.component, component),
+      eq(marksLocks.component, component)
     ),
   })
 }
 
-export async function lockMarks(courseOfferingId: string, component: string, lockedBy: string) {
+export async function lockMarks(
+  courseOfferingId: string,
+  component: string,
+  lockedBy: string
+) {
   const [result] = await db
     .insert(marksLocks)
     .values({
@@ -144,7 +158,11 @@ export async function lockMarks(courseOfferingId: string, component: string, loc
   return result
 }
 
-export async function unlockMarks(courseOfferingId: string, component: string, unlockedBy: string) {
+export async function unlockMarks(
+  courseOfferingId: string,
+  component: string,
+  unlockedBy: string
+) {
   const [result] = await db
     .insert(marksLocks)
     .values({

@@ -9,13 +9,15 @@ export const dynamic = "force-dynamic"
 
 const marksEntrySchema = z.object({
   courseOfferingId: z.string().uuid(),
-  marks: z.array(z.object({
-    studentId: z.string().uuid(),
-    isa: z.number().int().min(0).nullable(),
-    mse1: z.number().int().min(0).nullable(),
-    mse2: z.number().int().min(0).nullable(),
-    ese: z.number().int().min(0).nullable(),
-  })),
+  marks: z.array(
+    z.object({
+      studentId: z.string().uuid(),
+      isa: z.number().int().min(0).nullable(),
+      mse1: z.number().int().min(0).nullable(),
+      mse2: z.number().int().min(0).nullable(),
+      ese: z.number().int().min(0).nullable(),
+    })
+  ),
 })
 
 export async function POST(req: NextRequest) {

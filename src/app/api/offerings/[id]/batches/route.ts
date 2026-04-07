@@ -14,7 +14,10 @@ const assignSchema = z.object({
   studentId: z.string().uuid(),
 })
 
-export async function POST(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+export async function POST(
+  req: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
   try {
     const user = await getSessionUser()
     if (!user || user.role === "student") {
@@ -42,8 +45,12 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
     })
 
     return apiSuccess(result)
-  } catch (err: any) {
-    if (err?.code === "23505") {
+  } catch (err) {
+    if (
+      err instanceof Error &&
+      "code" in err &&
+      (err as { code: string }).code === "23505"
+    ) {
       return apiError("Batch name already exists", 409)
     }
     console.error("Failed to create batch:", err)
@@ -51,7 +58,10 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
   }
 }
 
-export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+export async function PATCH(
+  req: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
   try {
     const user = await getSessionUser()
     if (!user || user.role === "student") {

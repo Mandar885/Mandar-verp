@@ -45,7 +45,6 @@ type OfferingItem = {
   }
   faculty: { id: string; firstName: string; lastName: string } | null
 }
-
 type FacultyOption = { id: string; name: string }
 
 export function OfferingsClient({
@@ -79,10 +78,12 @@ export function OfferingsClient({
     <div className="space-y-4">
       <div className="flex items-center justify-between">
         <p className="text-sm font-medium">{semesterLabel}</p>
-        <Badge variant="secondary" className="tabular-nums text-xs">{filtered.length} offerings</Badge>
+        <Badge variant="secondary" className="text-xs tabular-nums">
+          {filtered.length} offerings
+        </Badge>
       </div>
       <div className="relative max-w-sm">
-        <SearchIcon className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
+        <SearchIcon className="text-muted-foreground absolute top-1/2 left-3 size-4 -translate-y-1/2" />
         <Input
           placeholder="Search by course name or code..."
           value={search}
@@ -90,7 +91,7 @@ export function OfferingsClient({
           className="pl-9"
         />
       </div>
-      <div className="rounded-lg border bg-card">
+      <div className="bg-card rounded-lg border">
         <Table>
           <TableHeader>
             <TableRow>
@@ -107,32 +108,52 @@ export function OfferingsClient({
           <TableBody>
             {filtered.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={8} className="h-24 text-center text-muted-foreground">No results.</TableCell>
+                <TableCell
+                  colSpan={8}
+                  className="text-muted-foreground h-24 text-center"
+                >
+                  No results.
+                </TableCell>
               </TableRow>
             ) : (
               filtered.map((o) => (
                 <TableRow key={o.id}>
-                  <TableCell className="font-mono text-xs">{o.course.courseCode}</TableCell>
-                  <TableCell className="font-medium text-sm">{o.course.courseName}</TableCell>
-                  <TableCell className="text-center">
-                    <Badge variant="outline" className="capitalize">{o.course.courseType}</Badge>
+                  <TableCell className="font-mono text-xs">
+                    {o.course.courseCode}
                   </TableCell>
-                  <TableCell className="text-center tabular-nums">{o.course.credits}</TableCell>
+                  <TableCell className="text-sm font-medium">
+                    {o.course.courseName}
+                  </TableCell>
                   <TableCell className="text-center">
-                    {o.division ? <Badge variant="outline">{o.division}</Badge> : <span className="text-muted-foreground">All</span>}
+                    <Badge variant="outline" className="capitalize">
+                      {o.course.courseType}
+                    </Badge>
+                  </TableCell>
+                  <TableCell className="text-center tabular-nums">
+                    {o.course.credits}
+                  </TableCell>
+                  <TableCell className="text-center">
+                    {o.division ? (
+                      <Badge variant="outline">{o.division}</Badge>
+                    ) : (
+                      <span className="text-muted-foreground">All</span>
+                    )}
                   </TableCell>
                   <TableCell>
-                    {o.faculty
-                      ? `${o.faculty.firstName} ${o.faculty.lastName}`
-                      : <span className="text-muted-foreground">Unassigned</span>
-                    }
+                    {o.faculty ? (
+                      `${o.faculty.firstName} ${o.faculty.lastName}`
+                    ) : (
+                      <span className="text-muted-foreground">Unassigned</span>
+                    )}
                   </TableCell>
-                  <TableCell className="text-center tabular-nums">{o.course.maxTotal}</TableCell>
+                  <TableCell className="text-center tabular-nums">
+                    {o.course.maxTotal}
+                  </TableCell>
                   <TableCell className="text-center">
                     <div className="flex items-center justify-center gap-2">
                       <Link
                         href={`/dashboard/offerings/${o.id}`}
-                        className="text-sm text-blue underline-offset-2 hover:underline"
+                        className="text-blue text-sm underline-offset-2 hover:underline"
                       >
                         Manage
                       </Link>
@@ -178,7 +199,11 @@ function AssignFacultyDialog({
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger render={<button className="text-sm text-blue underline-offset-2 hover:underline" />}>
+      <DialogTrigger
+        render={
+          <button className="text-blue text-sm underline-offset-2 hover:underline" />
+        }
+      >
         Assign
       </DialogTrigger>
       <DialogContent className="max-w-sm">
@@ -186,18 +211,27 @@ function AssignFacultyDialog({
           <DialogTitle>Assign Faculty</DialogTitle>
         </DialogHeader>
         <div className="space-y-4 pt-2">
-          <Select value={selected} onValueChange={(v) => setSelected(v ?? "none")}>
+          <Select
+            value={selected}
+            onValueChange={(v) => setSelected(v ?? "none")}
+          >
             <SelectTrigger>
               <SelectValue placeholder="Select faculty" />
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="none">Unassigned</SelectItem>
               {facultyOptions.map((f) => (
-                <SelectItem key={f.id} value={f.id}>{f.name}</SelectItem>
+                <SelectItem key={f.id} value={f.id}>
+                  {f.name}
+                </SelectItem>
               ))}
             </SelectContent>
           </Select>
-          <Button onClick={handleSave} disabled={saving} className="w-full bg-blue text-blue-foreground hover:bg-blue/90">
+          <Button
+            onClick={handleSave}
+            disabled={saving}
+            className="bg-blue text-blue-foreground hover:bg-blue/90 w-full"
+          >
             {saving ? "Saving..." : "Save"}
           </Button>
         </div>

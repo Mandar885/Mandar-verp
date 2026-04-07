@@ -1,3 +1,6 @@
+import { config } from "dotenv"
+config({ path: ".env.local" })
+
 import { Pool, neonConfig } from "@neondatabase/serverless"
 import ws from "ws"
 import * as fs from "fs"
@@ -24,7 +27,9 @@ async function run() {
     return
   }
 
-  const { rows: applied } = await pool.query("SELECT filename FROM _migrations ORDER BY filename")
+  const { rows: applied } = await pool.query(
+    "SELECT filename FROM _migrations ORDER BY filename"
+  )
   const appliedSet = new Set(applied.map((r) => r.filename))
 
   const files = fs
@@ -44,7 +49,9 @@ async function run() {
     }
   }
 
-  console.log(`\n  Total: ${files.length} | Applied: ${files.length - pendingCount} | Pending: ${pendingCount}\n`)
+  console.log(
+    `\n  Total: ${files.length} | Applied: ${files.length - pendingCount} | Pending: ${pendingCount}\n`
+  )
   await pool.end()
 }
 

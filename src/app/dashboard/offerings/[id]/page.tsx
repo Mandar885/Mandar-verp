@@ -1,17 +1,25 @@
 import { notFound } from "next/navigation"
 import { PageHeader } from "@/components/page-header"
 import { OfferingDetailClient } from "./client"
-import { getCourseOfferingById, getAllStudents, getBatchesByCourseOffering } from "@/db/queries"
+import {
+  getCourseOfferingById,
+  getAllStudents,
+  getBatchesByCourseOffering,
+} from "@/db/queries"
 
 export const dynamic = "force-dynamic"
 
-export default async function OfferingDetailPage({ params }: { params: Promise<{ id: string }> }) {
+export default async function OfferingDetailPage({
+  params,
+}: {
+  params: Promise<{ id: string }>
+}) {
   const { id } = await params
   const offering = await getCourseOfferingById(id)
   if (!offering) return notFound()
 
   const [allStudents, batches] = await Promise.all([
-    getAllStudents({ department: "EXCS" }),
+    getAllStudents(),
     getBatchesByCourseOffering(id),
   ])
 

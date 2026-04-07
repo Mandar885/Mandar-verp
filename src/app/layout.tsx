@@ -1,32 +1,41 @@
-import type { Metadata } from "next";
-import { Plus_Jakarta_Sans, JetBrains_Mono } from "next/font/google";
-import "./globals.css";
+import type { Metadata } from "next"
+import { Plus_Jakarta_Sans, JetBrains_Mono } from "next/font/google"
+import { Toaster } from "@/components/ui/sonner"
+import { TooltipProvider } from "@/components/ui/tooltip"
+import "./globals.css"
 
-const jakarta = Plus_Jakarta_Sans({
-  variable: "--font-jakarta",
+const fontSans = Plus_Jakarta_Sans({
+  variable: "--font-sans",
   subsets: ["latin"],
-});
+})
 
-const jetbrainsMono = JetBrains_Mono({
-  variable: "--font-jetbrains-mono",
+const fontMono = JetBrains_Mono({
+  variable: "--font-mono",
   subsets: ["latin"],
-});
+})
 
 export const metadata: Metadata = {
-  title: "EXCS - College ERP Management System",
-  description: "Enterprise Resource Planning for College Administration",
-};
+  title: "VERP - Vidyalankar ERP",
+  description: "Open-source ERP for Vidyalankar Institute of Technology",
+}
 
 export default function RootLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode;
+  children: React.ReactNode
 }>) {
   return (
-    <html lang="en" className={`${jakarta.variable} ${jetbrainsMono.variable}`} suppressHydrationWarning>
-      <body className="antialiased">
-        {children}
+    <html
+      lang="en"
+      className={`${fontSans.variable} ${fontMono.variable}`}
+      suppressHydrationWarning
+    >
+      <body className="bg-background min-h-dvh font-sans antialiased">
+        <TooltipProvider>
+          {children}
+          <Toaster />
+        </TooltipProvider>
       </body>
     </html>
-  );
+  )
 }

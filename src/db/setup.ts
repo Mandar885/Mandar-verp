@@ -1,3 +1,6 @@
+import { config } from "dotenv"
+config({ path: ".env.local" })
+
 import { execSync } from "child_process"
 import * as path from "path"
 
