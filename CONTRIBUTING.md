@@ -6,11 +6,10 @@ VERP is a VOSS Labs project. Contributions are welcome from all Vidyalankar stud
 
 1. Fork the repo and clone your fork
 2. `npm install`
-3. `cp .env.example .env.local` and fill in your database credentials
-4. `npm run db:push && npm run db:migrate`
-5. `npm run dev`
+3. `npm run setup` -- interactive wizard that walks you through Neon, writes `.env.local`, and runs migrations
+4. `npm run dev`
 
-See [README.md](./README.md) for details on environment variables.
+The wizard is idempotent: re-run it any time to overwrite `.env.local` or just re-apply migrations. For manual setup steps and env var details, see [README.md](./README.md).
 
 ## Making Changes
 

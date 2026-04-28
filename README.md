@@ -18,50 +18,53 @@ VERP handles the core academic operations of the college: student records, facul
 
 ### Prerequisites
 
-- Node.js 18+
+- Node.js 20+ (required by Next 16 / React 19)
 - A PostgreSQL database (we use [Neon](https://neon.tech) -- free tier works)
 
 ### Setup
 
-1. Clone the repo:
-
 ```bash
 git clone https://github.com/voss-labs/verp.git
 cd verp
-```
-
-2. Install dependencies:
-
-```bash
 npm install
+npm run setup
 ```
 
-3. Copy the environment template and fill in your values:
+`npm run setup` runs an interactive wizard (Voss) that:
 
-```bash
-cp .env.example .env.local
-```
+1. Walks you through creating a Neon project (region pick, pooled vs direct URL guidance)
+2. Generates `BETTER_AUTH_SECRET` and writes `.env.local`
+3. Inspects the database (warns if it's not empty and not a previous verp install)
+4. Runs schema push + SQL migrations
+5. Lets you create one or more user accounts (admin / HoD / faculty (TR) / student) with hashed passwords seeded directly into the DB
 
-You need:
-- `DATABASE_URL` -- pooled Neon connection string (used by the app)
-- `DIRECT_URL` -- direct Neon connection string (used by migrations)
-- `BETTER_AUTH_SECRET` -- a random secret (`openssl rand -base64 32`)
-- `BETTER_AUTH_URL` -- `http://localhost:3000` for local dev
+Re-run any time -- it's idempotent. Pass `--ci` (or set `CI=true`) to skip prompts in non-interactive environments.
 
-4. Push the schema and run migrations:
-
-```bash
-npm run db:push
-npm run db:migrate
-```
-
-5. Start the dev server:
+When the wizard finishes it offers to start the dev server. Otherwise:
 
 ```bash
 npm run dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000).
+
+#### Manual setup (advanced)
+
+If you'd rather configure things by hand:
+
+```bash
+cp .env.example .env.local        # then edit values
+npm run db:push
+npm run db:migrate
+npm run dev
+```
+
+Required env vars:
+
+- `DATABASE_URL` -- pooled Neon connection string (used by the app)
+- `DIRECT_URL` -- direct Neon connection string (used by migrations)
+- `BETTER_AUTH_SECRET` -- a random secret (`openssl rand -base64 32`)
+- `BETTER_AUTH_URL` -- `http://localhost:3000` for local dev
 
 ## Project Structure
 
@@ -88,25 +91,26 @@ Schema is defined in `src/db/schema/` using Drizzle ORM. Queries are organized b
 
 **Key commands:**
 
-| Command | Description |
-|---|---|
-| `npm run db:push` | Push schema changes to database |
-| `npm run db:migrate` | Run pending SQL migrations |
-| `npm run db:migrate:status` | Check migration status |
-| `npm run db:generate` | Generate new migration from schema changes |
-| `npm run db:studio` | Open Drizzle Studio (visual DB browser) |
-| `npm run db:setup` | Full setup (push + migrate) |
+| Command                     | Description                                |
+| --------------------------- | ------------------------------------------ |
+| `npm run db:push`           | Push schema changes to database            |
+| `npm run db:migrate`        | Run pending SQL migrations                 |
+| `npm run db:migrate:status` | Check migration status                     |
+| `npm run db:generate`       | Generate new migration from schema changes |
+| `npm run db:studio`         | Open Drizzle Studio (visual DB browser)    |
+| `npm run db:setup`          | Full setup (push + migrate)                |
 
 ## Scripts
 
-| Command | Description |
-|---|---|
-| `npm run dev` | Start dev server with Turbopack |
-| `npm run build` | Production build |
-| `npm run lint` | Run ESLint |
-| `npm run typecheck` | Run TypeScript type checking |
-| `npm run format` | Format code with Prettier |
-| `npm run check` | Run typecheck + lint + format check |
+| Command             | Description                                               |
+| ------------------- | --------------------------------------------------------- |
+| `npm run setup`     | Interactive setup wizard (Neon + .env.local + migrations) |
+| `npm run dev`       | Start dev server with Turbopack                           |
+| `npm run build`     | Production build                                          |
+| `npm run lint`      | Run ESLint                                                |
+| `npm run typecheck` | Run TypeScript type checking                              |
+| `npm run format`    | Format code with Prettier                                 |
+| `npm run check`     | Run typecheck + lint + format check                       |
 
 ## Contributing
 
