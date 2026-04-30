@@ -10,9 +10,23 @@ import { exportTableCsv, exportTableXlsx } from "@/lib/xlsx-export"
 import { downloadBase64File } from "@/lib/utils"
 
 export function StudentsClient({ data }: { data: StudentRow[] }) {
-  const handleExport = async (filteredData: StudentRow[], format: "csv" | "xlsx") => {
-    const headers = ["Roll No.", "Name", "Email", "Department", "Division", "Year", "Semester", "Phone", "Gender", "Status"]
-    const rows = filteredData.map(s => [
+  const handleExport = async (
+    filteredData: StudentRow[],
+    format: "csv" | "xlsx"
+  ) => {
+    const headers = [
+      "Roll No.",
+      "Name",
+      "Email",
+      "Department",
+      "Division",
+      "Year",
+      "Semester",
+      "Phone",
+      "Gender",
+      "Status",
+    ]
+    const rows = filteredData.map((s) => [
       s.rollNumber,
       `${s.firstName} ${s.lastName}`,
       s.email,
@@ -22,7 +36,7 @@ export function StudentsClient({ data }: { data: StudentRow[] }) {
       s.semester ?? "-",
       s.phoneNo ?? "-",
       s.gender ?? "-",
-      s.isActive ? "Active" : "Inactive"
+      s.isActive ? "Active" : "Inactive",
     ])
 
     const dateStr = new Date().toISOString().split("T")[0]
@@ -50,7 +64,7 @@ export function StudentsClient({ data }: { data: StudentRow[] }) {
     <DataTableView
       columns={studentsColumns}
       data={data}
-      searchKey="global"
+      globalSearch
       searchPlaceholder="Search students..."
       exportConfig={{
         filename: "Students",

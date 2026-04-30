@@ -427,7 +427,7 @@ export async function exportTableXlsx(params: {
     cell.fill = HEADER_FILL
     cell.alignment = CENTER
     cell.border = THIN_BORDER
-    
+
     // Auto-width approximation
     const col = ws.getColumn(i + 1)
     col.width = Math.max(12, h.length + 4)

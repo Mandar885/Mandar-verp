@@ -10,9 +10,22 @@ import { exportTableCsv, exportTableXlsx } from "@/lib/xlsx-export"
 import { downloadBase64File } from "@/lib/utils"
 
 export function FacultyClient({ data }: { data: FacultyRow[] }) {
-  const handleExport = async (filteredData: FacultyRow[], format: "csv" | "xlsx") => {
-    const headers = ["Employee ID", "First Name", "Last Name", "Email", "Department", "Designation", "Qualification", "Phone", "Status"]
-    const rows = filteredData.map(f => [
+  const handleExport = async (
+    filteredData: FacultyRow[],
+    format: "csv" | "xlsx"
+  ) => {
+    const headers = [
+      "Employee ID",
+      "First Name",
+      "Last Name",
+      "Email",
+      "Department",
+      "Designation",
+      "Qualification",
+      "Phone",
+      "Status",
+    ]
+    const rows = filteredData.map((f) => [
       f.employeeId,
       f.firstName,
       f.lastName,
@@ -48,8 +61,8 @@ export function FacultyClient({ data }: { data: FacultyRow[] }) {
     <DataTableView
       columns={facultyColumns}
       data={data}
-      searchKey="name"
-      searchPlaceholder="Search by name..."
+      globalSearch
+      searchPlaceholder="Search faculty..."
       exportConfig={{
         filename: "Faculty",
         onExport: handleExport,

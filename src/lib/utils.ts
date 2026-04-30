@@ -5,7 +5,11 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
-export function downloadBase64File(base64: string, filename: string, mimeType: string) {
+export function downloadBase64File(
+  base64: string,
+  filename: string,
+  mimeType: string
+) {
   fetch(`data:${mimeType};base64,${base64}`)
     .then((res) => res.blob())
     .then((blob) => {

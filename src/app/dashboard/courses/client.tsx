@@ -10,9 +10,23 @@ import { exportTableCsv, exportTableXlsx } from "@/lib/xlsx-export"
 import { downloadBase64File } from "@/lib/utils"
 
 export function CoursesClient({ data }: { data: CourseRow[] }) {
-  const handleExport = async (filteredData: CourseRow[], format: "csv" | "xlsx") => {
-    const headers = ["Code", "Course Name", "Type", "Department", "Credits", "ISA", "MSE", "ESE", "Total", "Status"]
-    const rows = filteredData.map(c => [
+  const handleExport = async (
+    filteredData: CourseRow[],
+    format: "csv" | "xlsx"
+  ) => {
+    const headers = [
+      "Code",
+      "Course Name",
+      "Type",
+      "Department",
+      "Credits",
+      "ISA",
+      "MSE",
+      "ESE",
+      "Total",
+      "Status",
+    ]
+    const rows = filteredData.map((c) => [
       c.courseCode,
       c.courseName,
       c.courseType,
@@ -49,7 +63,7 @@ export function CoursesClient({ data }: { data: CourseRow[] }) {
     <DataTableView
       columns={coursesColumns}
       data={data}
-      searchKey="courseName"
+      globalSearch
       searchPlaceholder="Search courses..."
       exportConfig={{
         filename: "Courses",

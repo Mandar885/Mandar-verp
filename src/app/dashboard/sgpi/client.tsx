@@ -409,7 +409,7 @@ export function CgpaClient({
                     {student.computed.hasFail ? (
                       <Badge
                         variant="outline"
-                        className="text-destructive border-red-200 bg-red-50 text-xs"
+                        className="text-destructive border-destructive/20 bg-destructive/10 text-xs"
                       >
                         Fail
                       </Badge>
@@ -547,7 +547,7 @@ function StudentDetailDialog({
                   {sem.sgpi.hasFail && (
                     <Badge
                       variant="outline"
-                      className="text-destructive border-red-200 bg-red-50 text-[10px]"
+                      className="text-destructive border-destructive/20 bg-destructive/10 text-[10px]"
                     >
                       Fail
                     </Badge>

@@ -35,6 +35,7 @@ interface DataTableViewProps<TData, TValue> {
   data: TData[]
   searchKey?: string
   searchPlaceholder?: string
+  globalSearch?: boolean
   exportConfig?: {
     filename: string
     onExport: (data: TData[], format: "csv" | "xlsx") => Promise<void>
@@ -46,10 +47,13 @@ export function DataTableView<TData, TValue>({
   data,
   searchKey,
   searchPlaceholder = "Search...",
+  globalSearch,
   exportConfig,
 }: DataTableViewProps<TData, TValue>) {
   const [sorting, setSorting] = React.useState<SortingState>([])
-  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([])
+  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
+    []
+  )
   const [globalFilter, setGlobalFilter] = React.useState("")
   const [isExporting, setIsExporting] = React.useState(false)
 
@@ -57,8 +61,8 @@ export function DataTableView<TData, TValue>({
     if (!exportConfig) return
     setIsExporting(true)
     try {
-      const filteredData = table.getFilteredRowModel().rows.map(r => r.original)
-      await exportConfig.onExport(filteredData, format)
+      const exportRows = table.getSortedRowModel().rows.map((r) => r.original)
+      await exportConfig.onExport(exportRows, format)
     } finally {
       setIsExporting(false)
     }
@@ -78,35 +82,42 @@ export function DataTableView<TData, TValue>({
     state: { sorting, columnFilters, globalFilter },
   })
 
+  const showSearch = Boolean(globalSearch || searchKey)
+
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
-        {searchKey || searchPlaceholder !== "Search..." ? (
-          <div className="relative max-w-sm w-full">
+        {showSearch ? (
+          <div className="relative w-full max-w-sm">
             <SearchIcon className="text-muted-foreground absolute top-1/2 left-3 size-4 -translate-y-1/2" />
             <Input
               placeholder={searchPlaceholder}
               value={
-                searchKey && searchKey !== "global"
-                  ? ((table.getColumn(searchKey)?.getFilterValue() as string) ?? "")
-                  : globalFilter
+                globalSearch
+                  ? globalFilter
+                  : ((table
+                      .getColumn(searchKey!)
+                      ?.getFilterValue() as string) ?? "")
               }
               onChange={(e) => {
-                if (searchKey && searchKey !== "global") {
-                  table.getColumn(searchKey)?.setFilterValue(e.target.value)
-                } else {
+                if (globalSearch) {
                   setGlobalFilter(e.target.value)
+                } else {
+                  table.getColumn(searchKey!)?.setFilterValue(e.target.value)
                 }
               }}
               className="pl-9"
             />
           </div>
         ) : (
-          <div /> // Placeholder for spacing if no search key
+          <div />
         )}
         {exportConfig && (
           <DropdownMenu>
-            <DropdownMenuTrigger className={buttonVariants({ variant: "outline" })} disabled={isExporting}>
+            <DropdownMenuTrigger
+              className={buttonVariants({ variant: "outline" })}
+              disabled={isExporting}
+            >
               {isExporting ? (
                 <Loader2Icon className="mr-2 h-4 w-4 animate-spin" />
               ) : (
